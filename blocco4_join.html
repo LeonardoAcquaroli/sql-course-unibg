@@ -632,11 +632,11 @@
     </div>
 
     <!-- SEZIONE 4.1 -->
-    <h2>4.1 Perche esistono i JOIN</h2>
+    <h2>4.1 Perché esistono i JOIN</h2>
 
     <div class="definition-box">
         <h4>Il problema dei database relazionali</h4>
-        <p>Nei database relazionali, i dati sono <strong>distribuiti su piu tabelle</strong> per evitare ridondanza e garantire l'integrita. Ma questo significa che per rispondere a domande di business, spesso devi <strong>combinare informazioni da tabelle diverse</strong>.</p>
+        <p>Nei database relazionali, i dati sono <strong>distribuiti su più tabelle</strong> per evitare ridondanza e garantire l'integrità. Ma questo significa che per rispondere a domande di business, spesso devi <strong>combinare informazioni da tabelle diverse</strong>.</p>
     </div>
 
     <p>Immagina di avere queste due tabelle:</p>
@@ -662,7 +662,7 @@
         </div>
     </div>
 
-    <p><strong>La domanda:</strong> "Qual e il nome del cliente che ha fatto l'ordine 101?"</p>
+    <p><strong>La domanda:</strong> "Qual è il nome del cliente che ha fatto l'ordine 101?"</p>
     <p>Le informazioni sono in <span class="highlight">DUE tabelle diverse</span>! Il nome e in <code>clienti</code>, gli ordini in <code>ordini</code>. Devi combinarle.</p>
 
     <div class="analogy">
@@ -794,7 +794,7 @@ Tabella CLIENTI                    Tabella ORDINI
 
     <div class="info-box">
         <div class="info-box-title">Nota</div>
-        <p><code>INNER JOIN</code> e <code>JOIN</code> sono equivalenti. La parola INNER e opzionale ma rende il codice piu esplicito.</p>
+        <p><code>INNER JOIN</code> e <code>JOIN</code> sono equivalenti. La parola INNER è opzionale ma rende il codice più esplicito.</p>
     </div>
 
     <h3>Esempio dettagliato</h3>
@@ -837,7 +837,7 @@ Tabella CLIENTI                    Tabella ORDINI
 
     <div class="info-box warning">
         <div class="info-box-title">Nota importante</div>
-        <p><strong>Luca (id=3) NON appare</strong> nel risultato! Perche? Perche non ha ordini nella tabella ordini, quindi non c'e corrispondenza. INNER JOIN esclude le righe senza match.</p>
+        <p><strong>Luca (id=3) NON appare</strong> nel risultato! Perché? Perché non ha ordini nella tabella ordini, quindi non c'è corrispondenza. INNER JOIN esclude le righe senza match.</p>
     </div>
 
     <!-- SEZIONE 4.4 -->
@@ -845,7 +845,7 @@ Tabella CLIENTI                    Tabella ORDINI
 
     <div class="join-type-card">
         <h4>LEFT JOIN (o LEFT OUTER JOIN)</h4>
-        <p>Restituisce <strong>TUTTE le righe della tabella sinistra</strong> (quella nel FROM), piu le corrispondenze dalla tabella destra. Se non c'e match, le colonne della tabella destra saranno NULL.</p>
+        <p>Restituisce <strong>TUTTE le righe della tabella sinistra</strong> (quella nel FROM), più le corrispondenze dalla tabella destra. Se non c'è match, le colonne della tabella destra saranno NULL.</p>
     </div>
 
     <div class="schema-box" style="text-align: center;">
@@ -891,7 +891,7 @@ Tabella CLIENTI                    Tabella ORDINI
         <tr style="background: #fffaf0;"><td>Luca</td><td><em>NULL</em></td><td><em>NULL</em></td></tr>
     </table>
 
-    <p><strong>Luca appare!</strong> Anche se non ha ordini. Le colonne degli ordini sono NULL perche non ci sono corrispondenze.</p>
+    <p><strong>Luca appare!</strong> Anche se non ha ordini. Le colonne degli ordini sono NULL perché non ci sono corrispondenze.</p>
 
     <h3>RIGHT JOIN</h3>
 
@@ -954,7 +954,7 @@ Tabella CLIENTI                    Tabella ORDINI
 
     <div class="definition-box">
         <h4>Cos'e ON</h4>
-        <p>La clausola <code>ON</code> specifica <strong>come le due tabelle sono correlate</strong>, cioe quali colonne confrontare per trovare le corrispondenze.</p>
+        <p>La clausola <code>ON</code> specifica <strong>come le due tabelle sono correlate</strong>, cioè quali colonne confrontare per trovare le corrispondenze.</p>
     </div>
 
     <h3>Sintassi</h3>
@@ -969,21 +969,21 @@ Tabella CLIENTI                    Tabella ORDINI
 
     <div class="code-block">
         <div class="code-header">SQL - Vari tipi di condizioni ON</div>
-        <pre><code><span class="comment">-- Uguaglianza semplice (piu comune)</span>
+        <pre><code><span class="comment">-- Uguaglianza semplice (più comune)</span>
 <span class="keyword">ON</span> clienti.id <span class="operator">=</span> ordini.id_cliente
 
 <span class="comment">-- Condizioni multiple (AND)</span>
 <span class="keyword">ON</span> tabella1.col1 <span class="operator">=</span> tabella2.col1 
    <span class="keyword">AND</span> tabella1.col2 <span class="operator">=</span> tabella2.col2
 
-<span class="comment">-- Esempio pratico con piu condizioni</span>
+<span class="comment">-- Esempio pratico con più condizioni</span>
 <span class="keyword">ON</span> vendite.anno <span class="operator">=</span> budget.anno 
    <span class="keyword">AND</span> vendite.regione <span class="operator">=</span> budget.regione</code></pre>
     </div>
 
-    <h3>JOIN con piu di due tabelle</h3>
+    <h3>JOIN con più di due tabelle</h3>
 
-    <p>Puoi concatenare piu JOIN per combinare tre, quattro o piu tabelle:</p>
+    <p>Puoi concatenare più JOIN per combinare tre, quattro o più tabelle:</p>
 
     <div class="code-block">
         <div class="code-header">SQL - JOIN multipli</div>
@@ -1002,8 +1002,8 @@ Tabella CLIENTI                    Tabella ORDINI
     <h2>4.6 Alias di tabella</h2>
 
     <div class="definition-box">
-        <h4>Perche usare alias per le tabelle?</h4>
-        <p>Quando lavori con JOIN, devi spesso specificare <code>tabella.colonna</code> per evitare ambiguita. Con nomi di tabelle lunghi, il codice diventa verboso. Gli <strong>alias</strong> rendono il codice piu pulito e leggibile.</p>
+        <h4>Perché usare alias per le tabelle?</h4>
+        <p>Quando lavori con JOIN, devi spesso specificare <code>tabella.colonna</code> per evitare ambiguità. Con nomi di tabelle lunghi, il codice diventa verboso. Gli <strong>alias</strong> rendono il codice più pulito e leggibile.</p>
     </div>
 
     <h3>Sintassi</h3>
@@ -1114,7 +1114,7 @@ Tabella CLIENTI                    Tabella ORDINI
 <span class="keyword">FROM</span> clienti c
 <span class="keyword">INNER JOIN</span> ordini o <span class="keyword">ON</span> c.id <span class="operator">=</span> o.id_cliente;</code></pre>
                     </div>
-                    <p>Nota: l'ordine 105 (id_cliente=5) non appare perche il cliente 5 non esiste.</p>
+                    <p>Nota: l'ordine 105 (id_cliente=5) non appare perché il cliente 5 non esiste.</p>
                 </div>
             </details>
         </div>
@@ -1131,7 +1131,7 @@ Tabella CLIENTI                    Tabella ORDINI
 <span class="keyword">FROM</span> clienti c
 <span class="keyword">LEFT JOIN</span> ordini o <span class="keyword">ON</span> c.id <span class="operator">=</span> o.id_cliente;</code></pre>
                     </div>
-                    <p>Luca e Sara appaiono con NULL negli ordini perche non hanno fatto acquisti.</p>
+                    <p>Luca e Sara appaiono con NULL negli ordini perché non hanno fatto acquisti.</p>
                 </div>
             </details>
         </div>
@@ -1208,7 +1208,7 @@ Tabella CLIENTI                    Tabella ORDINI
 <span class="keyword">RIGHT JOIN</span> ordini o <span class="keyword">ON</span> c.id <span class="operator">=</span> o.id_cliente
 <span class="keyword">ORDER BY</span> o.data <span class="keyword">DESC</span>;</code></pre>
                     </div>
-                    <p>L'ordine 105 appare con NULL per nome e citta perche il cliente 5 non esiste.</p>
+                    <p>L'ordine 105 appare con NULL per nome e città perché il cliente 5 non esiste.</p>
                 </div>
             </details>
         </div>
@@ -1280,7 +1280,7 @@ Tabella CLIENTI                    Tabella ORDINI
         </tr>
         <tr>
             <td><strong>CTE (WITH)</strong></td>
-            <td>Common Table Expressions per query piu leggibili</td>
+            <td>Common Table Expressions per query più leggibili</td>
             <td>Intermedio</td>
         </tr>
         <tr>
@@ -1295,7 +1295,7 @@ Tabella CLIENTI                    Tabella ORDINI
         </tr>
         <tr>
             <td><strong>UNION / INTERSECT</strong></td>
-            <td>Combinare risultati di piu query</td>
+            <td>Combinare risultati di più query</td>
             <td>Intermedio</td>
         </tr>
         <tr>
