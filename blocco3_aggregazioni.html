@@ -827,7 +827,7 @@
             <h4>ERRORE</h4>
             <div class="code-block">
                 <div class="code-header">SQL</div>
-                <pre><code><span class="comment">-- nome non e aggregato ne nel GROUP BY!</span>
+                <pre><code><span class="comment">-- nome non è né aggregato né nel GROUP BY!</span>
 <span class="keyword">SELECT</span> dipartimento, nome, <span class="function">AVG</span>(stipendio)
 <span class="keyword">FROM</span> dipendenti
 <span class="keyword">GROUP BY</span> dipartimento;</code></pre>
@@ -873,7 +873,7 @@
 
     <div class="definition-box">
         <h4>Il problema</h4>
-        <p><code>WHERE</code> filtra le righe<strong>PRIMA</strong> dell'aggregazione. Ma come fare per filtrare i <strong>risultati</strong> dell'aggregazione? Ad esempio, "mostra solo i dipartimenti con stipendio medio superiore a 40000"?</p>
+        <p><code>WHERE</code> filtra le righe <strong>PRIMA</strong> dell'aggregazione. Ma come fare per filtrare i <strong>risultati</strong> dell'aggregazione? Ad esempio, "mostra solo i dipartimenti con stipendio medio superiore a 40000"?</p>
     </div>
 
     <div class="comparison-box">
