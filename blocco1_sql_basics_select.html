@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blocco 1 - SQL Basics & SELECT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Calibri', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px 60px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .block-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .duration {
+            color: #2d2e30;
+            font-size: 18px;
+        }
+
+        .duration strong {
+            color: #667eea;
+        }
+
+        h2 {
+            color: #2d3748;
+            font-size: 28px;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4a5468;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+        }
+
+        h3 {
+            color: #4a5568;
+            font-size: 22px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #667eea;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: #4a5568;
+            font-size: 17px;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-left: 5px solid #667eea;
+            padding: 25px 30px;
+            margin: 25px 0;
+            border-radius: 0 15px 15px 0;
+        }
+
+        .definition-box h4 {
+            color: #667eea;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .definition-box p {
+            margin-bottom: 0;
+            font-size: 17px;
+        }
+
+        .info-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .info-box.warning {
+            background: #fffaf0;
+            border-color: #f6ad55;
+        }
+
+        .info-box.success {
+            background: #f0fff4;
+            border-color: #68d391;
+        }
+
+        .info-box-title {
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-box.warning .info-box-title {
+            color: #c05621;
+        }
+
+        .info-box.success .info-box-title {
+            color: #276749;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 16px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #4a5468;
+            color: #4a5568;
+        }
+
+        tr:nth-child(even) {
+            background: #f7fafc;
+        }
+
+        tr:hover {
+            background: #edf2f7;
+        }
+
+        .code-block {
+            background: #1a202c;
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .code-header {
+            background: #2d3748;
+            color: #a0aec0;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .code-header::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #48bb78;
+            border-radius: 50%;
+        }
+
+        pre {
+            margin: 0;
+            padding: 25px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #4a5468;
+        }
+
+        .keyword {
+            color: #f687b3;
+            font-weight: bold;
+        }
+
+        .string {
+            color: #68d391;
+        }
+
+        .comment {
+            color: #718096;
+            font-style: italic;
+        }
+
+        .function {
+            color: #63b3ed;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            background: #f7fafc;
+            border: 1px solid rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .top-nav a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #2d3748;
+            padding: 8px 12px;
+            border-radius: 10px;
+        }
+
+        .top-nav a:hover {
+            background: rgba(0,0,0,0.06);
+        }
+
+        .top-nav .nav-home {
+            color: #667eea;
+        }
+
+        .top-nav .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .top-nav .nav-links a.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .number {
+            color: #f6ad55;
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 25px;
+            color: #4a5568;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 17px;
+        }
+
+        .schema-box {
+            background: #f7fafc;
+            border: 2px dashed #cbd5e0;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-family: 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #2d3748;
+            overflow-x: auto;
+        }
+
+        .exercise-section {
+            background: linear-gradient(135deg, #f093fb15 0%, #f5576c15 100%);
+            border: 2px solid #f093fb;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .exercise-section h2 {
+            color: #b83280;
+            border-bottom-color: #f093fb;
+        }
+
+        .exercise-section h2::before {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .exercise {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .exercise-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .exercise-text {
+            font-size: 17px;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        details {
+            margin-top: 15px;
+        }
+
+        summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        summary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        details[open] summary {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .solution {
+            background: #f7fafc;
+            border: 1px solid #4a5468;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            padding: 20px;
+        }
+
+        .data-table {
+            background: white;
+            margin: 20px 0;
+        }
+
+        .data-table th {
+            background: #4a5568;
+        }
+
+        .next-block {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #4a5468;
+        }
+
+        .next-block a {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .next-block a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .analogy {
+            background: #faf5ff;
+            border-left: 5px solid #9f7aea;
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .analogy-title {
+            color: #6b46c1;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="top-nav">
+        <a class="nav-home" href="index.html">← Programma</a>
+        <div class="nav-links">
+            <a class="active" href="blocco1_sql_basics_select.html">Blocco 1</a>
+            <a href="blocco2_filtering_sorting.html">Blocco 2</a>
+            <a href="blocco3_aggregazioni.html">Blocco 3</a>
+            <a href="blocco4_join.html">Blocco 4</a>
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="block-number">Blocco 1 di 4</div>
+        <h1>SQL Basics & SELECT</h1>
+        <p class="duration"><strong>Durata:</strong> 25 minuti teoria + 20 minuti esercizi</p>
+    </div>
+
+    <!-- SEZIONE 1.1 -->
+    <h2>1.1 Cos'è un database e a cosa serve</h2>
+
+    <div class="definition-box">
+        <h4>📚 Definizione</h4>
+        <p>Un <strong>database</strong> è una raccolta organizzata di dati strutturati, memorizzati elettronicamente in un sistema informatico. È progettato per permettere la memorizzazione, il recupero e la gestione efficiente delle informazioni.</p>
+    </div>
+
+    <p>Immagina un database come un <span class="highlight">archivio digitale intelligente</span>. A differenza di un semplice file Excel o di documenti sparsi in cartelle, un database offre funzionalità avanzate per gestire grandi quantità di dati in modo efficiente e sicuro.</p>
+
+    <div class="analogy">
+        <div class="analogy-title">💡 Analogia pratica</div>
+        <p>Pensa a una biblioteca: i libri (dati) sono organizzati per categoria, autore, anno. C'è un catalogo (indice) che permette di trovare rapidamente qualsiasi libro. Più bibliotecari (utenti) possono cercare libri contemporaneamente senza conflitti. Questo è esattamente ciò che fa un database con i dati digitali.</p>
+    </div>
+
+    <h3>Perché usare un database?</h3>
+
+    <table>
+        <tr>
+            <th style="width: 25%;">Caratteristica</th>
+            <th style="width: 35%;">Descrizione</th>
+            <th style="width: 40%;">Esempio pratico</th>
+        </tr>
+        <tr>
+            <td><strong>Organizzazione</strong></td>
+            <td>I dati sono strutturati in modo logico e coerente</td>
+            <td>Clienti in una tabella, ordini in un'altra, collegati tra loro</td>
+        </tr>
+        <tr>
+            <td><strong>Persistenza</strong></td>
+            <td>I dati rimangono memorizzati anche dopo lo spegnimento</td>
+            <td>Gli ordini di ieri sono ancora disponibili oggi</td>
+        </tr>
+        <tr>
+            <td><strong>Accesso concorrente</strong></td>
+            <td>Più utenti possono accedere simultaneamente</td>
+            <td>10 operatori inseriscono ordini nello stesso momento</td>
+        </tr>
+        <tr>
+            <td><strong>Sicurezza</strong></td>
+            <td>Controllo degli accessi e protezione dei dati</td>
+            <td>Solo i manager vedono gli stipendi dei dipendenti</td>
+        </tr>
+        <tr>
+            <td><strong>Integrità</strong></td>
+            <td>Regole che garantiscono la correttezza dei dati</td>
+            <td>Non puoi inserire un ordine per un cliente inesistente</td>
+        </tr>
+    </table>
+
+    <h3>Database relazionale: la struttura a tabelle</h3>
+
+    <p>Un <strong>database relazionale</strong> organizza i dati in <span class="highlight">tabelle</span> (dette anche "relazioni") che sono collegate tra loro attraverso relazioni logiche. Questo è il tipo di database più diffuso nel mondo aziendale e quello su cui lavorerai come Data Analyst.</p>
+
+    <div class="schema-box">
+<pre style="margin:0; font-family: 'Consolas', 'Courier New', monospace;">
++----------------------+         +----------------------+
+|       CLIENTI        |         |        ORDINI        |
++----------------------+         +----------------------+
+| id_cliente  (PK)     |&lt;--------| id_ordine   (PK)     |
+| nome                 |   1:N   | id_cliente  (FK)     |
+| email                |         | data_ordine          |
+| citta                |         | totale               |
++----------------------+         +----------------------+
+
+PK = Primary Key (identifica univocamente ogni riga)
+FK = Foreign Key (riferimento a un'altra tabella)
+1:N = Un cliente puo avere molti ordini
+</pre>
+    </div>
+
+    <h3>Esempi di database nel mondo reale</h3>
+
+    <table>
+        <tr>
+            <th>Settore</th>
+            <th>Cosa contiene il database</th>
+            <th>Tabelle tipiche</th>
+        </tr>
+        <tr>
+            <td><strong>E-commerce</strong></td>
+            <td>Catalogo prodotti, ordini, clienti, recensioni</td>
+            <td>prodotti, ordini, clienti, carrelli, pagamenti</td>
+        </tr>
+        <tr>
+            <td><strong>Banca</strong></td>
+            <td>Conti correnti, transazioni, prestiti</td>
+            <td>conti, movimenti, clienti, carte, prestiti</td>
+        </tr>
+        <tr>
+            <td><strong>Ospedale</strong></td>
+            <td>Pazienti, visite, prescrizioni, medici</td>
+            <td>pazienti, visite, farmaci, medici, reparti</td>
+        </tr>
+        <tr>
+            <td><strong>Social Media</strong></td>
+            <td>Utenti, post, commenti, like, messaggi</td>
+            <td>utenti, post, commenti, amicizie, messaggi</td>
+        </tr>
+        <tr>
+            <td><strong>Risorse Umane</strong></td>
+            <td>Dipendenti, stipendi, ferie, valutazioni</td>
+            <td>dipendenti, stipendi, dipartimenti, assenze</td>
+        </tr>
+    </table>
+
+    <!-- SEZIONE 1.2 -->
+    <h2>1.2 Cos'è SQL e perché è usato nell'analisi dati</h2>
+
+    <div class="definition-box">
+        <h4>📚 Definizione</h4>
+        <p><strong>SQL</strong> (Structured Query Language, pronunciato "sequel" o "S-Q-L") è il linguaggio standard per comunicare con i database relazionali. È nato negli anni '70 e oggi è lo strumento fondamentale per qualsiasi professionista che lavora con i dati.</p>
+    </div>
+
+    <h3>Cosa puoi fare con SQL</h3>
+
+    <table>
+        <tr>
+            <th>Operazione</th>
+            <th>Comando SQL</th>
+            <th>Descrizione</th>
+            <th>Uso per data analyst</th>
+        </tr>
+        <tr>
+            <td><strong>Interrogare</strong></td>
+            <td>SELECT</td>
+            <td>Recuperare e leggere dati</td>
+            <td>⭐⭐⭐ Uso principale</td>
+        </tr>
+        <tr>
+            <td><strong>Inserire</strong></td>
+            <td>INSERT</td>
+            <td>Aggiungere nuovi dati</td>
+            <td>⭐ Occasionale</td>
+        </tr>
+        <tr>
+            <td><strong>Modificare</strong></td>
+            <td>UPDATE</td>
+            <td>Aggiornare dati esistenti</td>
+            <td>⭐ Occasionale</td>
+        </tr>
+        <tr>
+            <td><strong>Eliminare</strong></td>
+            <td>DELETE</td>
+            <td>Rimuovere dati</td>
+            <td>⭐ Raro</td>
+        </tr>
+        <tr>
+            <td><strong>Definire struttura</strong></td>
+            <td>CREATE, ALTER, DROP</td>
+            <td>Creare/modificare tabelle</td>
+            <td>Competenza dba</td>
+        </tr>
+    </table>
+
+    <h3>Perché SQL è essenziale per un data analyst</h3>
+
+    <p>Come Data Analyst, il tuo lavoro quotidiano sarà:</p>
+
+    <ol>
+        <li><strong>Estrarre dati</strong> da database aziendali (spesso contenenti milioni di righe)</li>
+        <li><strong>Filtrare</strong> informazioni specifiche (es. "solo ordini del 2024")</li>
+        <li><strong>Aggregare</strong> per calcolare metriche e KPI (es. "fatturato medio mensile")</li>
+        <li><strong>Combinare</strong> dati da più tabelle (es. "ordini con nomi clienti")</li>
+        <li><strong>Preparare</strong> dataset per analisi in altri strumenti (Excel, Python, Power BI, Tableau)</li>
+    </ol>
+
+    <div class="info-box success">
+        <div class="info-box-title">✅ Vantaggi di SQL</div>
+        <ul>
+            <li><strong>Standard universale:</strong> funziona su MySQL, PostgreSQL, SQL Server, Oracle, SQLite, BigQuery</li>
+            <li><strong>Efficiente:</strong> elabora milioni di righe in pochi secondi</li>
+            <li><strong>Dichiarativo:</strong> descrivi "cosa vuoi", non "come ottenerlo"</li>
+            <li><strong>Richiesto dal mercato:</strong> presente nel 90%+ delle offerte di lavoro Data Analyst</li>
+            <li><strong>Facile da imparare:</strong> sintassi simile all'inglese naturale</li>
+        </ul>
+    </div>
+
+    <div class="analogy">
+        <div class="analogy-title">💡 SQL è come ordinare al ristorante</div>
+        <p>Quando ordini al ristorante, dici "Vorrei la pizza margherita" (cosa vuoi), non "Prendi la farina, impastala, aggiungi il pomodoro..." (come fare). SQL funziona allo stesso modo: tu descrivi i dati che vuoi, il database si occupa di come recuperarli nel modo più efficiente.</p>
+    </div>
+
+    <!-- SEZIONE 1.3 -->
+    <h2>1.3 Tabelle, righe e colonne</h2>
+
+    <h3>Struttura di una tabella</h3>
+
+    <p>Una tabella in un database relazionale è simile a un foglio Excel, ma con regole più rigide. È composta da:</p>
+
+    <ul>
+        <li><strong>Colonne (campi/attributi):</strong> definiscono il <em>tipo</em> di informazione memorizzata. Ogni colonna ha un nome univoco e un tipo di dato specifico.</li>
+        <li><strong>Righe (record/tuple):</strong> rappresentano le singole <em>istanze</em> di dati. Ogni riga è un'entità completa (un cliente, un ordine, un prodotto).</li>
+    </ul>
+
+    <h4>Esempio: tabella <code>dipendenti</code></h4>
+
+    <table class="data-table">
+        <tr>
+            <th>id</th>
+            <th>nome</th>
+            <th>cognome</th>
+            <th>dipartimento</th>
+            <th>stipendio</th>
+            <th>data_assunzione</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Mario</td>
+            <td>Rossi</td>
+            <td>Vendite</td>
+            <td>35000</td>
+            <td>2020-03-15</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Anna</td>
+            <td>Bianchi</td>
+            <td>IT</td>
+            <td>42000</td>
+            <td>2019-07-01</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Luca</td>
+            <td>Verdi</td>
+            <td>Marketing</td>
+            <td>38000</td>
+            <td>2021-01-10</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Sara</td>
+            <td>Neri</td>
+            <td>IT</td>
+            <td>45000</td>
+            <td>2018-05-20</td>
+        </tr>
+    </table>
+
+    <div class="info-box">
+        <div class="info-box-title">📊 Terminologia</div>
+        <ul>
+            <li>La tabella ha <strong>6 colonne</strong>: id, nome, cognome, dipartimento, stipendio, data_assunzione</li>
+            <li>La tabella ha <strong>4 righe</strong> (esclusa l'intestazione)</li>
+            <li>Ogni riga rappresenta un <strong>dipendente</strong> specifico</li>
+            <li>Ogni colonna contiene un <strong>attributo</strong> del dipendente</li>
+            <li>La colonna <code>id</code> è la <strong>chiave primaria</strong> (identifica univocamente ogni dipendente)</li>
+        </ul>
+    </div>
+
+    <h3>Tipi di dati in SQL</h3>
+
+    <p>Ogni colonna deve avere un tipo di dato specifico. Questo garantisce la consistenza dei dati e permette al database di ottimizzare lo storage e le operazioni.</p>
+
+    <table>
+        <tr>
+            <th>Tipo</th>
+            <th>Descrizione</th>
+            <th>Esempi</th>
+            <th>Note</th>
+        </tr>
+        <tr>
+            <td><code>INTEGER</code> / <code>INT</code></td>
+            <td>Numeri interi</td>
+            <td>1, 42, -100, 0</td>
+            <td>Per ID, quantità, conteggi</td>
+        </tr>
+        <tr>
+            <td><code>DECIMAL</code> / <code>NUMERIC</code></td>
+            <td>Numeri decimali precisi</td>
+            <td>99.99, 1234.56</td>
+            <td>Per prezzi, importi (evita errori di arrotondamento)</td>
+        </tr>
+        <tr>
+            <td><code>FLOAT</code> / <code>REAL</code></td>
+            <td>Numeri decimali approssimati</td>
+            <td>3.14159, 2.71828</td>
+            <td>Per calcoli scientifici (non usare per soldi!)</td>
+        </tr>
+        <tr>
+            <td><code>VARCHAR(n)</code></td>
+            <td>Testo di lunghezza variabile</td>
+            <td>'Mario', 'Italia'</td>
+            <td>n = lunghezza massima in caratteri</td>
+        </tr>
+        <tr>
+            <td><code>TEXT</code></td>
+            <td>Testo lungo</td>
+            <td>Descrizioni, commenti</td>
+            <td>Per campi senza limite di lunghezza</td>
+        </tr>
+        <tr>
+            <td><code>DATE</code></td>
+            <td>Solo data</td>
+            <td>'2024-01-15'</td>
+            <td>Formato: YYYY-MM-DD</td>
+        </tr>
+        <tr>
+            <td><code>DATETIME</code> / <code>TIMESTAMP</code></td>
+            <td>Data e ora</td>
+            <td>'2024-01-15 14:30:00'</td>
+            <td>Per registrare momenti precisi</td>
+        </tr>
+        <tr>
+            <td><code>BOOLEAN</code></td>
+            <td>Vero/Falso</td>
+            <td>TRUE, FALSE</td>
+            <td>Per flag (attivo/non attivo)</td>
+        </tr>
+    </table>
+
+    <!-- SEZIONE 1.4 -->
+    <h2>1.4 SELECT * FROM table</h2>
+
+    <p>Il comando <code>SELECT</code> è il cuore di SQL per un Data Analyst. Ogni volta che vuoi <strong>vedere</strong>, <strong>estrarre</strong> o <strong>analizzare</strong> dati, userai SELECT.</p>
+
+    <div class="definition-box">
+        <h4>📚 Sintassi Base</h4>
+        <p>
+            <code><span class="keyword">SELECT</span> colonne <span class="keyword">FROM</span> nome_tabella;</code>
+        </p>
+    </div>
+
+    <h3>Anatomia di una query SELECT</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL</div>
+        <pre><code><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dipendenti;</code></pre>
+    </div>
+
+    <table>
+        <tr>
+            <th>Elemento</th>
+            <th>Significato</th>
+            <th>Obbligatorio?</th>
+        </tr>
+        <tr>
+            <td><code>SELECT</code></td>
+            <td>Parola chiave che indica "voglio vedere questi dati"</td>
+            <td>✅ Sì</td>
+        </tr>
+        <tr>
+            <td><code>*</code></td>
+            <td>Asterisco = "tutte le colonne"</td>
+            <td>Oppure lista di colonne</td>
+        </tr>
+        <tr>
+            <td><code>FROM</code></td>
+            <td>Specifica da quale tabella prendere i dati</td>
+            <td>✅ Sì</td>
+        </tr>
+        <tr>
+            <td><code>dipendenti</code></td>
+            <td>Nome della tabella</td>
+            <td>✅ Sì</td>
+        </tr>
+        <tr>
+            <td><code>;</code></td>
+            <td>Punto e virgola: termina la query</td>
+            <td>Consigliato (obbligatorio in alcuni DB)</td>
+        </tr>
+    </table>
+
+    <h3>Esempio 1: vedere tutti i dati</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Seleziona tutto</div>
+        <pre><code><span class="comment">-- Visualizza tutte le colonne e tutte le righe della tabella dipendenti</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dipendenti;</code></pre>
+    </div>
+
+    <p><strong>Risultato:</strong> La tabella completa con tutte le 6 colonne e 4 righe.</p>
+
+    <h3>Esempio 2: selezionare colonne specifiche</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Seleziona colonne specifiche</div>
+        <pre><code><span class="comment">-- Visualizza solo nome, cognome e stipendio</span>
+<span class="keyword">SELECT</span> nome, cognome, stipendio <span class="keyword">FROM</span> dipendenti;</code></pre>
+    </div>
+
+    <p><strong>Risultato:</strong></p>
+
+    <table class="data-table">
+        <tr>
+            <th>nome</th>
+            <th>cognome</th>
+            <th>stipendio</th>
+        </tr>
+        <tr>
+            <td>Mario</td>
+            <td>Rossi</td>
+            <td>35000</td>
+        </tr>
+        <tr>
+            <td>Anna</td>
+            <td>Bianchi</td>
+            <td>42000</td>
+        </tr>
+        <tr>
+            <td>Luca</td>
+            <td>Verdi</td>
+            <td>38000</td>
+        </tr>
+        <tr>
+            <td>Sara</td>
+            <td>Neri</td>
+            <td>45000</td>
+        </tr>
+    </table>
+
+    <div class="info-box warning">
+        <div class="info-box-title">⚠️ Best practice: evita SELECT *</div>
+        <p>In ambiente di lavoro, <strong>evita <code>SELECT *</code></strong> e specifica sempre le colonne necessarie. Motivi:</p>
+        <ul>
+            <li><strong>Performance:</strong> trasferisci meno dati dalla memoria</li>
+            <li><strong>Chiarezza:</strong> chi legge la query capisce subito quali dati servono</li>
+            <li><strong>Stabilità:</strong> se qualcuno aggiunge colonne alla tabella, la tua query non cambia comportamento</li>
+            <li><strong>Sicurezza:</strong> non esponi accidentalmente dati sensibili</li>
+        </ul>
+        <p>Usa <code>SELECT *</code> solo per esplorare rapidamente una tabella sconosciuta.</p>
+    </div>
+
+    <!-- SEZIONE 1.5 -->
+    <h2>1.5 Alias con AS</h2>
+
+    <div class="definition-box">
+        <h4>📚 Definizione</h4>
+        <p>Un <strong>alias</strong> è un nome temporaneo assegnato a una colonna (o tabella) nel risultato della query. L'alias esiste solo per la durata della query e non modifica la struttura del database.</p>
+    </div>
+
+    <h3>Perché usare gli alias?</h3>
+
+    <ul>
+        <li><strong>Leggibilità:</strong> rinominare colonne con nomi criptici (es. <code>col_A1</code> → <code>fatturato_totale</code>)</li>
+        <li><strong>Brevità:</strong> abbreviare nomi molto lunghi</li>
+        <li><strong>Calcoli:</strong> dare un nome significativo a colonne calcolate</li>
+        <li><strong>Report:</strong> creare intestazioni più professionali per l'output</li>
+    </ul>
+
+    <h3>Sintassi</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Sintassi Alias</div>
+        <pre><code><span class="keyword">SELECT</span> colonna <span class="keyword">AS</span> nuovo_nome <span class="keyword">FROM</span> tabella;
+
+<span class="comment">-- La parola AS è opzionale (ma raccomandata per chiarezza)</span>
+<span class="keyword">SELECT</span> colonna nuovo_nome <span class="keyword">FROM</span> tabella;</code></pre>
+    </div>
+
+    <h3>Esempio 1: rinominare colonne</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL</div>
+        <pre><code><span class="keyword">SELECT</span> 
+    nome <span class="keyword">AS</span> nome_dipendente, 
+    stipendio <span class="keyword">AS</span> retribuzione_annua
+<span class="keyword">FROM</span> dipendenti;</code></pre>
+    </div>
+
+    <p><strong>Risultato:</strong></p>
+
+    <table class="data-table">
+        <tr>
+            <th>nome_dipendente</th>
+            <th>retribuzione_annua</th>
+        </tr>
+        <tr>
+            <td>Mario</td>
+            <td>35000</td>
+        </tr>
+        <tr>
+            <td>Anna</td>
+            <td>42000</td>
+        </tr>
+        <tr>
+            <td>Luca</td>
+            <td>38000</td>
+        </tr>
+        <tr>
+            <td>Sara</td>
+            <td>45000</td>
+        </tr>
+    </table>
+
+    <h3>Esempio 2: alias con spazi (usa virgolette)</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL</div>
+        <pre><code><span class="keyword">SELECT</span> 
+    nome <span class="keyword">AS</span> <span class="string">"Nome Dipendente"</span>, 
+    stipendio <span class="keyword">AS</span> <span class="string">"Retribuzione Annua (€)"</span>
+<span class="keyword">FROM</span> dipendenti;</code></pre>
+    </div>
+
+    <div class="info-box">
+        <div class="info-box-title">ℹ️ Nota sui delimitatori</div>
+        <p>Per alias con spazi o caratteri speciali, usa:</p>
+        <ul>
+            <li><strong>Virgolette doppie <code>"alias"</code>:</strong> standard SQL (PostgreSQL, Oracle, SQL Server)</li>
+            <li><strong>Backtick <code>`alias`</code>:</strong> MySQL</li>
+            <li><strong>Parentesi quadre <code>[alias]</code>:</strong> SQL Server</li>
+        </ul>
+    </div>
+
+    <h3>Esempio 3: alias per colonne calcolate</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL</div>
+        <pre><code><span class="comment">-- Calcola lo stipendio mensile (approssimativo)</span>
+<span class="keyword">SELECT</span> 
+    nome,
+    cognome,
+    stipendio,
+    stipendio / <span class="number">12</span> <span class="keyword">AS</span> stipendio_mensile
+<span class="keyword">FROM</span> dipendenti;</code></pre>
+    </div>
+
+    <p><strong>Risultato:</strong></p>
+
+    <table class="data-table">
+        <tr>
+            <th>nome</th>
+            <th>cognome</th>
+            <th>stipendio</th>
+            <th>stipendio_mensile</th>
+        </tr>
+        <tr>
+            <td>Mario</td>
+            <td>Rossi</td>
+            <td>35000</td>
+            <td>2916.67</td>
+        </tr>
+        <tr>
+            <td>Anna</td>
+            <td>Bianchi</td>
+            <td>42000</td>
+            <td>3500.00</td>
+        </tr>
+        <tr>
+            <td>Luca</td>
+            <td>Verdi</td>
+            <td>38000</td>
+            <td>3166.67</td>
+        </tr>
+        <tr>
+            <td>Sara</td>
+            <td>Neri</td>
+            <td>45000</td>
+            <td>3750.00</td>
+        </tr>
+    </table>
+
+    <!-- SEZIONE 1.6 -->
+    <h2>1.6 LIMIT</h2>
+
+    <div class="definition-box">
+        <h4>📚 Definizione</h4>
+        <p><code>LIMIT</code> restringe il numero di righe restituite dalla query. È essenziale quando lavori con tabelle che contengono milioni di righe.</p>
+    </div>
+
+    <h3>Perché usare LIMIT?</h3>
+
+    <ul>
+        <li><strong>Esplorare dataset:</strong> vedere un campione prima di scrivere query complesse</li>
+        <li><strong>Performance:</strong> evitare di scaricare milioni di righe per errore</li>
+        <li><strong>Testing:</strong> verificare che la query funzioni prima di eseguirla completamente</li>
+        <li><strong>Top N:</strong> ottenere i "primi 10 clienti", "ultimi 5 ordini", ecc.</li>
+    </ul>
+
+    <h3>Sintassi</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL</div>
+        <pre><code><span class="keyword">SELECT</span> colonne <span class="keyword">FROM</span> tabella <span class="keyword">LIMIT</span> n;</code></pre>
+    </div>
+
+    <h3>Esempio 1: primi 3 dipendenti</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL</div>
+        <pre><code><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dipendenti <span class="keyword">LIMIT</span> <span class="number">3</span>;</code></pre>
+    </div>
+
+    <p><strong>Risultato:</strong> Solo le prime 3 righe della tabella.</p>
+
+    <table class="data-table">
+        <tr>
+            <th>id</th>
+            <th>nome</th>
+            <th>cognome</th>
+            <th>dipartimento</th>
+            <th>stipendio</th>
+            <th>data_assunzione</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Mario</td>
+            <td>Rossi</td>
+            <td>Vendite</td>
+            <td>35000</td>
+            <td>2020-03-15</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Anna</td>
+            <td>Bianchi</td>
+            <td>IT</td>
+            <td>42000</td>
+            <td>2019-07-01</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Luca</td>
+            <td>Verdi</td>
+            <td>Marketing</td>
+            <td>38000</td>
+            <td>2021-01-10</td>
+        </tr>
+    </table>
+
+    <h3>Esempio 2: combinare SELECT, colonne e LIMIT</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL</div>
+        <pre><code><span class="keyword">SELECT</span> nome, cognome, dipartimento 
+<span class="keyword">FROM</span> dipendenti 
+<span class="keyword">LIMIT</span> <span class="number">2</span>;</code></pre>
+    </div>
+
+    <h3>Varianti nei diversi database</h3>
+
+    <div class="info-box warning">
+        <div class="info-box-title">⚠️ Attenzione: sintassi diversa</div>
+        <p>Non tutti i database usano <code>LIMIT</code>. Ecco le alternative:</p>
+    </div>
+
+    <table>
+        <tr>
+            <th>Database</th>
+            <th>Sintassi</th>
+            <th>Esempio</th>
+        </tr>
+        <tr>
+            <td>MySQL, PostgreSQL, SQLite</td>
+            <td><code>LIMIT n</code></td>
+            <td><code>SELECT * FROM tab LIMIT 10</code></td>
+        </tr>
+        <tr>
+            <td>SQL Server</td>
+            <td><code>TOP n</code></td>
+            <td><code>SELECT TOP 10 * FROM tab</code></td>
+        </tr>
+        <tr>
+            <td>Oracle (vecchio)</td>
+            <td><code>WHERE ROWNUM <= n</code></td>
+            <td><code>SELECT * FROM tab WHERE ROWNUM <= 10</code></td>
+        </tr>
+        <tr>
+            <td>Oracle 12c+, SQL Standard</td>
+            <td><code>FETCH FIRST n ROWS ONLY</code></td>
+            <td><code>SELECT * FROM tab FETCH FIRST 10 ROWS ONLY</code></td>
+        </tr>
+    </table>
+
+    <h3>Bonus: OFFSET - saltare righe</h3>
+
+    <p><code>OFFSET</code> permette di saltare le prime N righe. Utile per la paginazione.</p>
+
+    <div class="code-block">
+        <div class="code-header">SQL</div>
+        <pre><code><span class="comment">-- Salta le prime 10 righe, poi mostra le successive 5</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dipendenti <span class="keyword">LIMIT</span> <span class="number">5</span> <span class="keyword">OFFSET</span> <span class="number">10</span>;
+
+<span class="comment">-- Esempio pratico: "pagina 3" di risultati (10 righe per pagina)</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> prodotti <span class="keyword">LIMIT</span> <span class="number">10</span> <span class="keyword">OFFSET</span> <span class="number">20</span>;</code></pre>
+    </div>
+
+    <!-- SEZIONE ESERCIZI -->
+    <div class="exercise-section">
+        <h2>✏️ Esercizi blocco 1</h2>
+        
+        <p>Usa la seguente tabella <code>prodotti</code> per gli esercizi:</p>
+
+        <table class="data-table">
+            <tr>
+                <th>id</th>
+                <th>nome_prodotto</th>
+                <th>categoria</th>
+                <th>prezzo</th>
+                <th>quantita_stock</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Laptop Pro</td>
+                <td>Elettronica</td>
+                <td>1299.99</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Mouse Wireless</td>
+                <td>Elettronica</td>
+                <td>29.99</td>
+                <td>200</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Sedia Ergonomica</td>
+                <td>Arredamento</td>
+                <td>349.00</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Monitor 27"</td>
+                <td>Elettronica</td>
+                <td>449.99</td>
+                <td>75</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Scrivania</td>
+                <td>Arredamento</td>
+                <td>199.00</td>
+                <td>45</td>
+            </tr>
+        </table>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 1.1</div>
+            <p class="exercise-text">Scrivi una query per visualizzare <strong>tutte le colonne e tutte le righe</strong> della tabella <code>prodotti</code>.</p>
+            <details>
+                <summary>🔍 Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> prodotti;</code></pre>
+                    </div>
+                    <p><strong>Spiegazione:</strong> L'asterisco (*) seleziona tutte le colonne. Senza LIMIT, vengono restituite tutte le righe.</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 1.2</div>
+            <p class="exercise-text">Scrivi una query per visualizzare <strong>solo il nome del prodotto e il prezzo</strong>.</p>
+            <details>
+                <summary>🔍 Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> nome_prodotto, prezzo <span class="keyword">FROM</span> prodotti;</code></pre>
+                    </div>
+                    <p><strong>Spiegazione:</strong> Elenchiamo solo le colonne che ci interessano, separate da virgola.</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 1.3</div>
+            <p class="exercise-text">Mostra nome prodotto (rinominato <strong>"Prodotto"</strong>), prezzo (rinominato <strong>"Prezzo €"</strong>) e quantità in stock (rinominato <strong>"Disponibilità"</strong>).</p>
+            <details>
+                <summary>🔍 Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> 
+    nome_prodotto <span class="keyword">AS</span> <span class="string">"Prodotto"</span>, 
+    prezzo <span class="keyword">AS</span> <span class="string">"Prezzo €"</span>, 
+    quantita_stock <span class="keyword">AS</span> <span class="string">"Disponibilità"</span>
+<span class="keyword">FROM</span> prodotti;</code></pre>
+                    </div>
+                    <p><strong>Spiegazione:</strong> Usiamo AS per creare alias. Le virgolette sono necessarie perché gli alias contengono spazi e caratteri speciali.</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 1.4</div>
+            <p class="exercise-text">Visualizza <strong>solo i primi 3 prodotti</strong> con tutte le loro informazioni.</p>
+            <details>
+                <summary>🔍 Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> prodotti <span class="keyword">LIMIT</span> <span class="number">3</span>;</code></pre>
+                    </div>
+                    <p><strong>Spiegazione:</strong> LIMIT 3 restringe l'output alle prime 3 righe.</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 1.5</div>
+            <p class="exercise-text">Crea una query che mostri nome prodotto e una nuova colonna <strong>"valore_totale"</strong> calcolata come <code>prezzo × quantita_stock</code>. Mostra solo i primi 2 risultati.</p>
+            <details>
+                <summary>🔍 Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> 
+    nome_prodotto, 
+    prezzo * quantita_stock <span class="keyword">AS</span> valore_totale
+<span class="keyword">FROM</span> prodotti
+<span class="keyword">LIMIT</span> <span class="number">2</span>;</code></pre>
+                    </div>
+                    <p><strong>Spiegazione:</strong> Moltiplichiamo due colonne per creare un valore calcolato. L'alias "valore_totale" dà un nome significativo alla nuova colonna. LIMIT 2 mostra solo i primi due risultati.</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 1.6 (Bonus)</div>
+            <p class="exercise-text">Mostra id, nome prodotto e il prezzo scontato del 20% (chiamalo <strong>"prezzo_scontato"</strong>) per tutti i prodotti.</p>
+            <details>
+                <summary>🔍 Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> 
+    id,
+    nome_prodotto, 
+    prezzo,
+    prezzo * <span class="number">0.80</span> <span class="keyword">AS</span> prezzo_scontato
+<span class="keyword">FROM</span> prodotti;</code></pre>
+                    </div>
+                    <p><strong>Spiegazione:</strong> Per calcolare uno sconto del 20%, moltiplichiamo il prezzo per 0.80 (100% - 20% = 80%).</p>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- RIEPILOGO -->
+    <h2>📋 Riepilogo blocco 1</h2>
+
+    <table>
+        <tr>
+            <th>Concetto</th>
+            <th>Sintassi</th>
+            <th>Esempio</th>
+        </tr>
+        <tr>
+            <td>Selezionare tutto</td>
+            <td><code>SELECT * FROM tabella</code></td>
+            <td><code>SELECT * FROM dipendenti</code></td>
+        </tr>
+        <tr>
+            <td>Selezionare colonne</td>
+            <td><code>SELECT col1, col2 FROM tabella</code></td>
+            <td><code>SELECT nome, stipendio FROM dipendenti</code></td>
+        </tr>
+        <tr>
+            <td>Alias colonna</td>
+            <td><code>SELECT col AS alias</code></td>
+            <td><code>SELECT nome AS dipendente</code></td>
+        </tr>
+        <tr>
+            <td>Colonne calcolate</td>
+            <td><code>SELECT col1 * col2 AS risultato</code></td>
+            <td><code>SELECT prezzo * quantita AS totale</code></td>
+        </tr>
+        <tr>
+            <td>Limitare righe</td>
+            <td><code>SELECT ... LIMIT n</code></td>
+            <td><code>SELECT * FROM prodotti LIMIT 10</code></td>
+        </tr>
+    </table>
+
+    <div class="next-block">
+        <p style="margin-bottom: 20px; color: #718096;">Prossimo argomento:</p>
+        <a href="blocco2_filtering_sorting.html">Blocco 2: Filtering & Sorting →</a>
+    </div>
+
+</div>
+
+</body>
+</html>

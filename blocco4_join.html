@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blocco 4 - JOIN Essenziali</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Calibri', Arial, sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            min-height: 100vh;
+            padding: 30px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px 60px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #4facfe;
+        }
+
+        .block-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .duration {
+            color: #718096;
+            font-size: 18px;
+        }
+
+        .duration strong {
+            color: #4facfe;
+        }
+
+        h2 {
+            color: #2d3748;
+            font-size: 28px;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4a5468;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 35px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 4px;
+        }
+
+        h3 {
+            color: #4a5568;
+            font-size: 22px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #4facfe;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: #4a5568;
+            font-size: 17px;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #4facfe15 0%, #00f2fe15 100%);
+            border-left: 5px solid #4facfe;
+            padding: 25px 30px;
+            margin: 25px 0;
+            border-radius: 0 15px 15px 0;
+        }
+
+        .definition-box h4 {
+            color: #4facfe;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .definition-box p {
+            margin-bottom: 0;
+            font-size: 17px;
+        }
+
+        .info-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .info-box.warning {
+            background: #fffaf0;
+            border-color: #f6ad55;
+        }
+
+        .info-box.success {
+            background: #f0fff4;
+            border-color: #68d391;
+        }
+
+        .info-box.danger {
+            background: #fff5f5;
+            border-color: #fc8181;
+        }
+
+        .info-box-title {
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-box.warning .info-box-title {
+            color: #c05621;
+        }
+
+        .info-box.success .info-box-title {
+            color: #276749;
+        }
+
+        .info-box.danger .info-box-title {
+            color: #c53030;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 16px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 15px 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #4a5468;
+            color: #4a5568;
+        }
+
+        tr:nth-child(even) {
+            background: #f7fafc;
+        }
+
+        tr:hover {
+            background: #edf2f7;
+        }
+
+        .code-block {
+            background: #1a202c;
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .code-header {
+            background: #2d3748;
+            color: #a0aec0;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .code-header::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #48bb78;
+            border-radius: 50%;
+        }
+
+        pre {
+            margin: 0;
+            padding: 25px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #4a5468;
+        }
+
+        .keyword {
+            color: #f687b3;
+            font-weight: bold;
+        }
+
+        .string {
+            color: #68d391;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            background: #f7fafc;
+            border: 1px solid rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .top-nav a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #2d3748;
+            padding: 8px 12px;
+            border-radius: 10px;
+        }
+
+        .top-nav a:hover {
+            background: rgba(0,0,0,0.06);
+        }
+
+        .top-nav .nav-home {
+            color: #4facfe;
+        }
+
+        .top-nav .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .top-nav .nav-links a.active {
+            background: #4facfe;
+            color: white;
+        }
+
+        .comment {
+            color: #718096;
+            font-style: italic;
+        }
+
+        .function {
+            color: #63b3ed;
+        }
+
+        .number {
+            color: #f6ad55;
+        }
+
+        .operator {
+            color: #fbb6ce;
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 25px;
+            color: #4a5568;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 17px;
+        }
+
+        .exercise-section {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px solid #667eea;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .exercise-section h2 {
+            color: #5a67d8;
+            border-bottom-color: #667eea;
+        }
+
+        .exercise-section h2::before {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .exercise {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .exercise-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .exercise-text {
+            font-size: 17px;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        details {
+            margin-top: 15px;
+        }
+
+        summary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        summary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
+        }
+
+        details[open] summary {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .solution {
+            background: #f7fafc;
+            border: 1px solid #4a5468;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            padding: 20px;
+        }
+
+        .data-table {
+            background: white;
+            margin: 20px 0;
+        }
+
+        .data-table th {
+            background: #4a5568;
+        }
+
+        .comparison-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .comparison-item {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid #4a5468;
+        }
+
+        .comparison-item.bad {
+            border-color: #fc8181;
+            background: #fff5f5;
+        }
+
+        .comparison-item.good {
+            border-color: #68d391;
+            background: #f0fff4;
+        }
+
+        .comparison-item h4 {
+            margin-top: 0;
+        }
+
+        .next-block {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #4a5468;
+        }
+
+        .next-block a {
+            display: inline-block;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .next-block a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4);
+        }
+
+        .analogy {
+            background: #faf5ff;
+            border-left: 5px solid #9f7aea;
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .analogy-title {
+            color: #6b46c1;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .schema-box {
+            background: #f7fafc;
+            border: 2px dashed #cbd5e0;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-family: 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #2d3748;
+            overflow-x: auto;
+        }
+
+        .join-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .join-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .join-circle.left {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .join-circle.right {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .join-circle.inner {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            margin-left: -40px;
+        }
+
+        .join-type-card {
+            background: linear-gradient(135deg, #4facfe08 0%, #00f2fe08 100%);
+            border: 2px solid #4facfe;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .join-type-card h4 {
+            color: #2b6cb0;
+            margin-top: 0;
+            font-size: 22px;
+        }
+
+        .tables-side-by-side {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 25px 0;
+        }
+
+        .table-container h4 {
+            margin-bottom: 10px;
+            color: #4a5568;
+        }
+
+        @media (max-width: 768px) {
+            .tables-side-by-side {
+                grid-template-columns: 1fr;
+            }
+            .comparison-box {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .final-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin: 40px 0;
+        }
+
+        .final-summary h2 {
+            color: white;
+            border-bottom-color: rgba(255,255,255,0.3);
+        }
+
+        .final-summary h2::before {
+            background: white;
+        }
+
+        .final-summary table {
+            box-shadow: none;
+        }
+
+        .final-summary th {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .final-summary td {
+            color: white;
+            border-bottom-color: rgba(255,255,255,0.2);
+        }
+
+        .final-summary tr:nth-child(even) {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .final-summary tr:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="top-nav">
+        <a class="nav-home" href="index.html">← Programma</a>
+        <div class="nav-links">
+            <a href="blocco1_sql_basics_select.html">Blocco 1</a>
+            <a href="blocco2_filtering_sorting.html">Blocco 2</a>
+            <a href="blocco3_aggregazioni.html">Blocco 3</a>
+            <a class="active" href="blocco4_join.html">Blocco 4</a>
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="block-number">Blocco 4 di 4</div>
+        <h1>JOIN Essenziali</h1>
+        <p class="duration"><strong>Durata:</strong> 25 minuti teoria + 25 minuti esercizi</p>
+    </div>
+
+    <!-- SEZIONE 4.1 -->
+    <h2>4.1 Perche esistono i JOIN</h2>
+
+    <div class="definition-box">
+        <h4>Il problema dei database relazionali</h4>
+        <p>Nei database relazionali, i dati sono <strong>distribuiti su piu tabelle</strong> per evitare ridondanza e garantire l'integrita. Ma questo significa che per rispondere a domande di business, spesso devi <strong>combinare informazioni da tabelle diverse</strong>.</p>
+    </div>
+
+    <p>Immagina di avere queste due tabelle:</p>
+
+    <div class="tables-side-by-side">
+        <div class="table-container">
+            <h4>Tabella <code>clienti</code></h4>
+            <table class="data-table">
+                <tr><th>id_cliente</th><th>nome</th><th>citta</th></tr>
+                <tr><td>1</td><td>Mario Rossi</td><td>Milano</td></tr>
+                <tr><td>2</td><td>Anna Bianchi</td><td>Roma</td></tr>
+                <tr><td>3</td><td>Luca Verdi</td><td>Napoli</td></tr>
+            </table>
+        </div>
+        <div class="table-container">
+            <h4>Tabella <code>ordini</code></h4>
+            <table class="data-table">
+                <tr><th>id_ordine</th><th>id_cliente</th><th>prodotto</th><th>totale</th></tr>
+                <tr><td>101</td><td>1</td><td>Laptop</td><td>899</td></tr>
+                <tr><td>102</td><td>2</td><td>Mouse</td><td>25</td></tr>
+                <tr><td>103</td><td>1</td><td>Monitor</td><td>350</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <p><strong>La domanda:</strong> "Qual e il nome del cliente che ha fatto l'ordine 101?"</p>
+    <p>Le informazioni sono in <span class="highlight">DUE tabelle diverse</span>! Il nome e in <code>clienti</code>, gli ordini in <code>ordini</code>. Devi combinarle.</p>
+
+    <div class="analogy">
+        <div class="analogy-title">Analogia pratica</div>
+        <p>Immagina due fogli Excel: uno con l'elenco degli studenti (nome, matricola), uno con i voti degli esami (matricola, voto). Per sapere "che voto ha preso Mario?", devi guardare entrambi i fogli e collegare le righe tramite la matricola. Questo e esattamente cio che fa un JOIN.</p>
+    </div>
+
+    <h3>La soluzione: JOIN</h3>
+
+    <p>I <strong>JOIN</strong> combinano righe di tabelle diverse basandosi su una colonna in comune (solitamente una chiave).</p>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Il tuo primo JOIN</div>
+        <pre><code><span class="keyword">SELECT</span> clienti.nome, ordini.prodotto, ordini.totale
+<span class="keyword">FROM</span> clienti
+<span class="keyword">JOIN</span> ordini <span class="keyword">ON</span> clienti.id_cliente <span class="operator">=</span> ordini.id_cliente;</code></pre>
+    </div>
+
+    <p><strong>Risultato:</strong></p>
+    <table class="data-table">
+        <tr><th>nome</th><th>prodotto</th><th>totale</th></tr>
+        <tr><td>Mario Rossi</td><td>Laptop</td><td>899</td></tr>
+        <tr><td>Anna Bianchi</td><td>Mouse</td><td>25</td></tr>
+        <tr><td>Mario Rossi</td><td>Monitor</td><td>350</td></tr>
+    </table>
+
+    <p>Il JOIN ha combinato le informazioni: ora vediamo il <strong>nome del cliente</strong> insieme ai <strong>dettagli dell'ordine</strong>!</p>
+
+    <!-- SEZIONE 4.2 -->
+    <h2>4.2 Primary key e foreign key</h2>
+
+    <p>Per capire come funzionano i JOIN, devi comprendere due concetti fondamentali:</p>
+
+    <div class="definition-box">
+        <h4>Primary key (chiave primaria)</h4>
+        <p>Una colonna (o combinazione di colonne) che identifica <strong>univocamente</strong> ogni riga di una tabella. Caratteristiche:</p>
+        <ul style="margin-top: 10px; margin-bottom: 0;">
+            <li>Valori <strong>unici</strong> - non si ripetono mai</li>
+            <li>Mai <strong>NULL</strong> - sempre presente</li>
+            <li>Solitamente chiamata <code>id</code> o <code>id_tabella</code></li>
+        </ul>
+    </div>
+
+    <div class="definition-box">
+        <h4>Foreign key (chiave esterna)</h4>
+        <p>Una colonna che fa <strong>riferimento</strong> alla primary key di un'altra tabella. Crea la "relazione" tra le tabelle. Caratteristiche:</p>
+        <ul style="margin-top: 10px; margin-bottom: 0;">
+            <li>Puo contenere valori <strong>duplicati</strong></li>
+            <li>Puo essere <strong>NULL</strong> (se la relazione e opzionale)</li>
+            <li>Il valore deve esistere nella tabella referenziata</li>
+        </ul>
+    </div>
+
+    <div class="schema-box">
+<pre style="margin:0; font-family: 'Consolas', 'Courier New', monospace;">
+Tabella CLIENTI                    Tabella ORDINI
++-------------+                    +-------------+
+| id_cliente  | &lt;-- PRIMARY KEY    | id_ordine   | &lt;-- PRIMARY KEY
+| nome        |                    | id_cliente  | &lt;-- FOREIGN KEY (riferisce clienti)
+| citta       |                    | prodotto    |
++-------------+                    | totale      |
+       ^                           +-------------+
+       |                                  |
+       +----------------------------------+
+                    RELAZIONE
+         Un cliente puo avere MOLTI ordini
+                    (1 : N)
+</pre>
+    </div>
+
+    <h3>Tipi di relazioni</h3>
+
+    <table>
+        <tr>
+            <th>Tipo</th>
+            <th>Descrizione</th>
+            <th>Esempio</th>
+        </tr>
+        <tr>
+            <td><strong>1:N</strong> (uno a molti)</td>
+            <td>Un record nella tabella A puo avere molti record correlati in B</td>
+            <td>Un cliente puo avere molti ordini</td>
+        </tr>
+        <tr>
+            <td><strong>1:1</strong> (uno a uno)</td>
+            <td>Un record in A corrisponde a esattamente un record in B</td>
+            <td>Un dipendente ha un solo badge</td>
+        </tr>
+        <tr>
+            <td><strong>N:N</strong> (molti a molti)</td>
+            <td>Molti record in A collegati a molti record in B</td>
+            <td>Studenti e corsi (richiede tabella di collegamento)</td>
+        </tr>
+    </table>
+
+    <!-- SEZIONE 4.3 -->
+    <h2>4.3 INNER JOIN</h2>
+
+    <div class="join-type-card">
+        <h4>INNER JOIN</h4>
+        <p>Restituisce <strong>solo le righe che hanno corrispondenza in ENTRAMBE le tabelle</strong>. Se una riga non ha match, viene esclusa dal risultato.</p>
+    </div>
+
+    <div class="schema-box" style="text-align: center;">
+<pre style="margin:0; font-family: 'Consolas', 'Courier New', monospace;">
+    Tabella A          Tabella B
+    +-------+          +-------+
+    |   A   |          |   B   |
+    |   +---+---+      |       |
+    |   |INNER |      |       |
+    |   | JOIN |------+       |
+    |   +---+---+      |       |
+    |       |          |       |
+    +-------+          +-------+
+
+    Il risultato contiene SOLO l'intersezione:
+    righe che esistono in entrambe le tabelle
+</pre>
+    </div>
+
+    <h3>Sintassi</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL - INNER JOIN</div>
+        <pre><code><span class="keyword">SELECT</span> colonne
+<span class="keyword">FROM</span> tabella1
+<span class="keyword">INNER JOIN</span> tabella2 <span class="keyword">ON</span> tabella1.chiave <span class="operator">=</span> tabella2.chiave;</code></pre>
+    </div>
+
+    <div class="info-box">
+        <div class="info-box-title">Nota</div>
+        <p><code>INNER JOIN</code> e <code>JOIN</code> sono equivalenti. La parola INNER e opzionale ma rende il codice piu esplicito.</p>
+    </div>
+
+    <h3>Esempio dettagliato</h3>
+
+    <div class="tables-side-by-side">
+        <div class="table-container">
+            <h4>clienti</h4>
+            <table class="data-table">
+                <tr><th>id</th><th>nome</th></tr>
+                <tr><td>1</td><td>Mario</td></tr>
+                <tr><td>2</td><td>Anna</td></tr>
+                <tr><td>3</td><td>Luca</td></tr>
+            </table>
+        </div>
+        <div class="table-container">
+            <h4>ordini</h4>
+            <table class="data-table">
+                <tr><th>id_ordine</th><th>id_cliente</th><th>totale</th></tr>
+                <tr><td>101</td><td>1</td><td>899</td></tr>
+                <tr><td>102</td><td>2</td><td>25</td></tr>
+                <tr><td>103</td><td>1</td><td>350</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL</div>
+        <pre><code><span class="keyword">SELECT</span> clienti.nome, ordini.id_ordine, ordini.totale
+<span class="keyword">FROM</span> clienti
+<span class="keyword">INNER JOIN</span> ordini <span class="keyword">ON</span> clienti.id <span class="operator">=</span> ordini.id_cliente;</code></pre>
+    </div>
+
+    <p><strong>Risultato:</strong></p>
+    <table class="data-table">
+        <tr><th>nome</th><th>id_ordine</th><th>totale</th></tr>
+        <tr><td>Mario</td><td>101</td><td>899</td></tr>
+        <tr><td>Anna</td><td>102</td><td>25</td></tr>
+        <tr><td>Mario</td><td>103</td><td>350</td></tr>
+    </table>
+
+    <div class="info-box warning">
+        <div class="info-box-title">Nota importante</div>
+        <p><strong>Luca (id=3) NON appare</strong> nel risultato! Perche? Perche non ha ordini nella tabella ordini, quindi non c'e corrispondenza. INNER JOIN esclude le righe senza match.</p>
+    </div>
+
+    <!-- SEZIONE 4.4 -->
+    <h2>4.4 LEFT JOIN e RIGHT JOIN</h2>
+
+    <div class="join-type-card">
+        <h4>LEFT JOIN (o LEFT OUTER JOIN)</h4>
+        <p>Restituisce <strong>TUTTE le righe della tabella sinistra</strong> (quella nel FROM), piu le corrispondenze dalla tabella destra. Se non c'e match, le colonne della tabella destra saranno NULL.</p>
+    </div>
+
+    <div class="schema-box" style="text-align: center;">
+<pre style="margin:0; font-family: 'Consolas', 'Courier New', monospace;">
+    Tabella A          Tabella B
+    +-------+          +-------+
+    | XXXXX |          |       |
+    | XXXXX +---+      |       |
+    | XXXXX |   |------+       |
+    | XXXXX +---+      |       |
+    | XXXXX |          |       |
+    +-------+          +-------+
+
+    LEFT JOIN: tutta la tabella A + match da B
+    Le X indicano le righe incluse (tutta la tabella A)
+</pre>
+    </div>
+
+    <h3>Sintassi LEFT JOIN</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL</div>
+        <pre><code><span class="keyword">SELECT</span> colonne
+<span class="keyword">FROM</span> tabella_sinistra
+<span class="keyword">LEFT JOIN</span> tabella_destra <span class="keyword">ON</span> condizione;</code></pre>
+    </div>
+
+    <h3>Esempio LEFT JOIN</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL - LEFT JOIN</div>
+        <pre><code><span class="keyword">SELECT</span> clienti.nome, ordini.id_ordine, ordini.totale
+<span class="keyword">FROM</span> clienti
+<span class="keyword">LEFT JOIN</span> ordini <span class="keyword">ON</span> clienti.id <span class="operator">=</span> ordini.id_cliente;</code></pre>
+    </div>
+
+    <p><strong>Risultato:</strong></p>
+    <table class="data-table">
+        <tr><th>nome</th><th>id_ordine</th><th>totale</th></tr>
+        <tr><td>Mario</td><td>101</td><td>899</td></tr>
+        <tr><td>Mario</td><td>103</td><td>350</td></tr>
+        <tr><td>Anna</td><td>102</td><td>25</td></tr>
+        <tr style="background: #fffaf0;"><td>Luca</td><td><em>NULL</em></td><td><em>NULL</em></td></tr>
+    </table>
+
+    <p><strong>Luca appare!</strong> Anche se non ha ordini. Le colonne degli ordini sono NULL perche non ci sono corrispondenze.</p>
+
+    <h3>RIGHT JOIN</h3>
+
+    <p>RIGHT JOIN e l'opposto di LEFT JOIN: restituisce tutte le righe della tabella <strong>destra</strong>.</p>
+
+    <div class="code-block">
+        <div class="code-header">SQL - RIGHT JOIN</div>
+        <pre><code><span class="keyword">SELECT</span> clienti.nome, ordini.id_ordine
+<span class="keyword">FROM</span> clienti
+<span class="keyword">RIGHT JOIN</span> ordini <span class="keyword">ON</span> clienti.id <span class="operator">=</span> ordini.id_cliente;</code></pre>
+    </div>
+
+    <div class="info-box">
+        <div class="info-box-title">Consiglio pratico</div>
+        <p>RIGHT JOIN e raramente usato nella pratica. Puoi sempre riscrivere un RIGHT JOIN come LEFT JOIN invertendo l'ordine delle tabelle. La maggior parte dei programmatori preferisce LEFT JOIN per consistenza.</p>
+    </div>
+
+    <h3>Quando usare quale JOIN?</h3>
+
+    <table>
+        <tr>
+            <th>Tipo JOIN</th>
+            <th>Quando usarlo</th>
+            <th>Esempio d'uso</th>
+        </tr>
+        <tr>
+            <td><strong>INNER JOIN</strong></td>
+            <td>Voglio solo dati completi, dove esiste corrispondenza</td>
+            <td>Report ordini con dettagli cliente (solo ordini validi)</td>
+        </tr>
+        <tr>
+            <td><strong>LEFT JOIN</strong></td>
+            <td>Voglio tutti i record della tabella principale + eventuali correlazioni</td>
+            <td>Tutti i clienti e i loro ordini (anche clienti senza ordini)</td>
+        </tr>
+        <tr>
+            <td><strong>RIGHT JOIN</strong></td>
+            <td>Raramente usato - inverti le tabelle e usa LEFT</td>
+            <td>-</td>
+        </tr>
+    </table>
+
+    <h3>Caso d'uso importante: trovare mancanze</h3>
+
+    <p>LEFT JOIN + WHERE IS NULL e un pattern comune per trovare "chi NON ha...":</p>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Trovare clienti senza ordini</div>
+        <pre><code><span class="comment">-- Clienti che NON hanno mai ordinato</span>
+<span class="keyword">SELECT</span> clienti.nome, clienti.citta
+<span class="keyword">FROM</span> clienti
+<span class="keyword">LEFT JOIN</span> ordini <span class="keyword">ON</span> clienti.id <span class="operator">=</span> ordini.id_cliente
+<span class="keyword">WHERE</span> ordini.id_ordine <span class="keyword">IS NULL</span>;</code></pre>
+    </div>
+
+    <p><strong>Risultato:</strong> Solo "Luca" - l'unico cliente senza ordini.</p>
+
+    <!-- SEZIONE 4.5 -->
+    <h2>4.5 La condizione ON</h2>
+
+    <div class="definition-box">
+        <h4>Cos'e ON</h4>
+        <p>La clausola <code>ON</code> specifica <strong>come le due tabelle sono correlate</strong>, cioe quali colonne confrontare per trovare le corrispondenze.</p>
+    </div>
+
+    <h3>Sintassi</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL</div>
+        <pre><code><span class="keyword">FROM</span> tabella1
+<span class="keyword">JOIN</span> tabella2 <span class="keyword">ON</span> tabella1.colonna <span class="operator">=</span> tabella2.colonna</code></pre>
+    </div>
+
+    <h3>Condizioni ON comuni</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Vari tipi di condizioni ON</div>
+        <pre><code><span class="comment">-- Uguaglianza semplice (piu comune)</span>
+<span class="keyword">ON</span> clienti.id <span class="operator">=</span> ordini.id_cliente
+
+<span class="comment">-- Condizioni multiple (AND)</span>
+<span class="keyword">ON</span> tabella1.col1 <span class="operator">=</span> tabella2.col1 
+   <span class="keyword">AND</span> tabella1.col2 <span class="operator">=</span> tabella2.col2
+
+<span class="comment">-- Esempio pratico con piu condizioni</span>
+<span class="keyword">ON</span> vendite.anno <span class="operator">=</span> budget.anno 
+   <span class="keyword">AND</span> vendite.regione <span class="operator">=</span> budget.regione</code></pre>
+    </div>
+
+    <h3>JOIN con piu di due tabelle</h3>
+
+    <p>Puoi concatenare piu JOIN per combinare tre, quattro o piu tabelle:</p>
+
+    <div class="code-block">
+        <div class="code-header">SQL - JOIN multipli</div>
+        <pre><code><span class="comment">-- Combinare clienti, ordini e prodotti</span>
+<span class="keyword">SELECT</span> 
+    clienti.nome,
+    ordini.id_ordine,
+    prodotti.nome_prodotto,
+    prodotti.categoria
+<span class="keyword">FROM</span> clienti
+<span class="keyword">JOIN</span> ordini <span class="keyword">ON</span> clienti.id <span class="operator">=</span> ordini.id_cliente
+<span class="keyword">JOIN</span> prodotti <span class="keyword">ON</span> ordini.id_prodotto <span class="operator">=</span> prodotti.id;</code></pre>
+    </div>
+
+    <!-- SEZIONE 4.6 -->
+    <h2>4.6 Alias di tabella</h2>
+
+    <div class="definition-box">
+        <h4>Perche usare alias per le tabelle?</h4>
+        <p>Quando lavori con JOIN, devi spesso specificare <code>tabella.colonna</code> per evitare ambiguita. Con nomi di tabelle lunghi, il codice diventa verboso. Gli <strong>alias</strong> rendono il codice piu pulito e leggibile.</p>
+    </div>
+
+    <h3>Sintassi</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL</div>
+        <pre><code><span class="comment">-- Con AS (esplicito)</span>
+<span class="keyword">FROM</span> clienti <span class="keyword">AS</span> c
+<span class="keyword">JOIN</span> ordini <span class="keyword">AS</span> o <span class="keyword">ON</span> c.id <span class="operator">=</span> o.id_cliente
+
+<span class="comment">-- Senza AS (implicito - funziona lo stesso)</span>
+<span class="keyword">FROM</span> clienti c
+<span class="keyword">JOIN</span> ordini o <span class="keyword">ON</span> c.id <span class="operator">=</span> o.id_cliente</code></pre>
+    </div>
+
+    <h3>Confronto: con e senza alias</h3>
+
+    <div class="comparison-box">
+        <div class="comparison-item">
+            <h4>Senza alias (verboso)</h4>
+            <div class="code-block">
+                <div class="code-header">SQL</div>
+                <pre><code><span class="keyword">SELECT</span> 
+    clienti.nome, 
+    clienti.citta, 
+    ordini.prodotto, 
+    ordini.totale
+<span class="keyword">FROM</span> clienti
+<span class="keyword">INNER JOIN</span> ordini 
+    <span class="keyword">ON</span> clienti.id_cliente 
+     = ordini.id_cliente
+<span class="keyword">WHERE</span> clienti.citta = <span class="string">'Milano'</span>;</code></pre>
+            </div>
+        </div>
+        <div class="comparison-item good">
+            <h4>Con alias (pulito)</h4>
+            <div class="code-block">
+                <div class="code-header">SQL</div>
+                <pre><code><span class="keyword">SELECT</span> 
+    c.nome, 
+    c.citta, 
+    o.prodotto, 
+    o.totale
+<span class="keyword">FROM</span> clienti c
+<span class="keyword">JOIN</span> ordini o 
+    <span class="keyword">ON</span> c.id_cliente 
+     = o.id_cliente
+<span class="keyword">WHERE</span> c.citta = <span class="string">'Milano'</span>;</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <h3>Alias obbligatori: self-join</h3>
+
+    <p>Quando fai un JOIN di una tabella con se stessa, gli alias sono <strong>obbligatori</strong> per distinguere le due "copie" della tabella.</p>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Self-Join</div>
+        <pre><code><span class="comment">-- Trovare dipendenti e i loro manager (stessa tabella!)</span>
+<span class="keyword">SELECT</span> 
+    d.nome <span class="keyword">AS</span> dipendente, 
+    m.nome <span class="keyword">AS</span> manager
+<span class="keyword">FROM</span> dipendenti d
+<span class="keyword">LEFT JOIN</span> dipendenti m <span class="keyword">ON</span> d.id_manager <span class="operator">=</span> m.id;</code></pre>
+    </div>
+
+    <p>In questo esempio, <code>d</code> rappresenta i dipendenti e <code>m</code> rappresenta i manager (che sono anche dipendenti). Senza alias, sarebbe impossibile distinguerli.</p>
+
+    <!-- ESERCIZI -->
+    <div class="exercise-section">
+        <h2>Esercizi blocco 4</h2>
+        
+        <p>Usa le seguenti tabelle:</p>
+
+        <div class="tables-side-by-side">
+            <div class="table-container">
+                <h4>clienti</h4>
+                <table class="data-table">
+                    <tr><th>id</th><th>nome</th><th>citta</th><th>email</th></tr>
+                    <tr><td>1</td><td>Mario Rossi</td><td>Milano</td><td>mario@email.com</td></tr>
+                    <tr><td>2</td><td>Anna Bianchi</td><td>Roma</td><td>anna@email.com</td></tr>
+                    <tr><td>3</td><td>Luca Verdi</td><td>Napoli</td><td>luca@email.com</td></tr>
+                    <tr><td>4</td><td>Sara Neri</td><td>Milano</td><td>NULL</td></tr>
+                </table>
+            </div>
+            <div class="table-container">
+                <h4>ordini</h4>
+                <table class="data-table">
+                    <tr><th>id_ordine</th><th>id_cliente</th><th>prodotto</th><th>totale</th><th>data</th></tr>
+                    <tr><td>101</td><td>1</td><td>Laptop</td><td>899</td><td>2024-01-15</td></tr>
+                    <tr><td>102</td><td>2</td><td>Mouse</td><td>49</td><td>2024-01-20</td></tr>
+                    <tr><td>103</td><td>1</td><td>Monitor</td><td>350</td><td>2024-02-01</td></tr>
+                    <tr><td>104</td><td>2</td><td>Tastiera</td><td>89</td><td>2024-02-10</td></tr>
+                    <tr><td>105</td><td>5</td><td>Cuffie</td><td>120</td><td>2024-02-15</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 4.1</div>
+            <p class="exercise-text">Mostra <strong>nome cliente, prodotto ordinato e totale</strong> per tutti gli ordini (solo ordini con clienti esistenti).</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> c.nome, o.prodotto, o.totale
+<span class="keyword">FROM</span> clienti c
+<span class="keyword">INNER JOIN</span> ordini o <span class="keyword">ON</span> c.id <span class="operator">=</span> o.id_cliente;</code></pre>
+                    </div>
+                    <p>Nota: l'ordine 105 (id_cliente=5) non appare perche il cliente 5 non esiste.</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 4.2</div>
+            <p class="exercise-text">Mostra <strong>tutti i clienti e i loro ordini</strong>. Includi anche i clienti che non hanno mai ordinato.</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> c.nome, c.citta, o.prodotto, o.totale
+<span class="keyword">FROM</span> clienti c
+<span class="keyword">LEFT JOIN</span> ordini o <span class="keyword">ON</span> c.id <span class="operator">=</span> o.id_cliente;</code></pre>
+                    </div>
+                    <p>Luca e Sara appaiono con NULL negli ordini perche non hanno fatto acquisti.</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 4.3</div>
+            <p class="exercise-text">Trova i clienti che <strong>NON hanno mai fatto ordini</strong>.</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> c.nome, c.citta
+<span class="keyword">FROM</span> clienti c
+<span class="keyword">LEFT JOIN</span> ordini o <span class="keyword">ON</span> c.id <span class="operator">=</span> o.id_cliente
+<span class="keyword">WHERE</span> o.id_ordine <span class="keyword">IS NULL</span>;</code></pre>
+                    </div>
+                    <p>Pattern importante: LEFT JOIN + WHERE IS NULL per trovare "mancanze".</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 4.4</div>
+            <p class="exercise-text">Per ogni cliente di <strong>Milano</strong>, mostra il <strong>totale speso</strong> in tutti gli ordini.</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> c.nome, <span class="function">SUM</span>(o.totale) <span class="keyword">AS</span> totale_speso
+<span class="keyword">FROM</span> clienti c
+<span class="keyword">JOIN</span> ordini o <span class="keyword">ON</span> c.id <span class="operator">=</span> o.id_cliente
+<span class="keyword">WHERE</span> c.citta <span class="operator">=</span> <span class="string">'Milano'</span>
+<span class="keyword">GROUP BY</span> c.nome;</code></pre>
+                    </div>
+                    <p>Combiniamo JOIN con GROUP BY e SUM per calcolare il totale per cliente.</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 4.5</div>
+            <p class="exercise-text">Mostra nome cliente, numero di ordini e totale speso per ogni cliente che ha fatto <strong>almeno 2 ordini</strong>.</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> 
+    c.nome, 
+    <span class="function">COUNT</span>(o.id_ordine) <span class="keyword">AS</span> num_ordini,
+    <span class="function">SUM</span>(o.totale) <span class="keyword">AS</span> totale_speso
+<span class="keyword">FROM</span> clienti c
+<span class="keyword">JOIN</span> ordini o <span class="keyword">ON</span> c.id <span class="operator">=</span> o.id_cliente
+<span class="keyword">GROUP BY</span> c.nome
+<span class="keyword">HAVING</span> <span class="function">COUNT</span>(o.id_ordine) >= <span class="number">2</span>;</code></pre>
+                    </div>
+                    <p>JOIN + GROUP BY + HAVING: la combinazione potente per analisi avanzate.</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 4.6 (Avanzato)</div>
+            <p class="exercise-text">Mostra tutti gli ordini con nome cliente e citta, ordinati per data decrescente. Includi gli ordini <strong>anche se il cliente non esiste</strong> nel database (usa RIGHT JOIN).</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> c.nome, c.citta, o.prodotto, o.totale, o.data
+<span class="keyword">FROM</span> clienti c
+<span class="keyword">RIGHT JOIN</span> ordini o <span class="keyword">ON</span> c.id <span class="operator">=</span> o.id_cliente
+<span class="keyword">ORDER BY</span> o.data <span class="keyword">DESC</span>;</code></pre>
+                    </div>
+                    <p>L'ordine 105 appare con NULL per nome e citta perche il cliente 5 non esiste.</p>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- RIEPILOGO FINALE -->
+    <div class="final-summary">
+        <h2>Riepilogo corso completo</h2>
+
+        <table>
+            <tr>
+                <th>Blocco</th>
+                <th>Competenze acquisite</th>
+            </tr>
+            <tr>
+                <td><strong>1. SQL Basics</strong></td>
+                <td>SELECT, FROM, AS (alias), LIMIT</td>
+            </tr>
+            <tr>
+                <td><strong>2. Filtering</strong></td>
+                <td>WHERE, operatori (=, >, <), AND/OR, IN, IS NULL, ORDER BY</td>
+            </tr>
+            <tr>
+                <td><strong>3. Aggregazioni</strong></td>
+                <td>COUNT, SUM, AVG, MAX, MIN, GROUP BY, HAVING</td>
+            </tr>
+            <tr>
+                <td><strong>4. JOIN</strong></td>
+                <td>INNER JOIN, LEFT JOIN, RIGHT JOIN, ON, alias tabelle</td>
+            </tr>
+        </table>
+    </div>
+
+    <h2>Cheat sheet finale</h2>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Template Query Completa</div>
+        <pre><code><span class="comment">-- Query SQL completa con tutti gli elementi</span>
+<span class="keyword">SELECT</span> 
+    t1.colonna1,
+    t2.colonna2,
+    <span class="function">COUNT</span>(*) <span class="keyword">AS</span> conteggio,
+    <span class="function">SUM</span>(t1.valore) <span class="keyword">AS</span> totale,
+    <span class="function">AVG</span>(t1.importo) <span class="keyword">AS</span> media
+<span class="keyword">FROM</span> tabella1 t1
+<span class="keyword">LEFT JOIN</span> tabella2 t2 <span class="keyword">ON</span> t1.id <span class="operator">=</span> t2.id_riferimento
+<span class="keyword">WHERE</span> t1.condizione <span class="operator">=</span> <span class="string">'valore'</span>
+    <span class="keyword">AND</span> t2.altra_condizione > <span class="number">100</span>
+<span class="keyword">GROUP BY</span> t1.colonna1, t2.colonna2
+<span class="keyword">HAVING</span> <span class="function">COUNT</span>(*) > <span class="number">1</span>
+<span class="keyword">ORDER BY</span> totale <span class="keyword">DESC</span>
+<span class="keyword">LIMIT</span> <span class="number">10</span>;</code></pre>
+    </div>
+
+    <h2>Prossimi passi</h2>
+
+    <p>Ora che hai le basi solide, ecco gli argomenti per approfondire:</p>
+
+    <table>
+        <tr>
+            <th>Argomento</th>
+            <th>Descrizione</th>
+            <th>Livello</th>
+        </tr>
+        <tr>
+            <td><strong>Subquery</strong></td>
+            <td>Query annidate all'interno di altre query</td>
+            <td>Intermedio</td>
+        </tr>
+        <tr>
+            <td><strong>CTE (WITH)</strong></td>
+            <td>Common Table Expressions per query piu leggibili</td>
+            <td>Intermedio</td>
+        </tr>
+        <tr>
+            <td><strong>CASE WHEN</strong></td>
+            <td>Logica condizionale dentro le query</td>
+            <td>Intermedio</td>
+        </tr>
+        <tr>
+            <td><strong>Window Functions</strong></td>
+            <td>ROW_NUMBER, RANK, LAG, LEAD, SUM OVER</td>
+            <td>Avanzato</td>
+        </tr>
+        <tr>
+            <td><strong>UNION / INTERSECT</strong></td>
+            <td>Combinare risultati di piu query</td>
+            <td>Intermedio</td>
+        </tr>
+        <tr>
+            <td><strong>Ottimizzazione</strong></td>
+            <td>Indici, EXPLAIN, query performance</td>
+            <td>Avanzato</td>
+        </tr>
+    </table>
+
+    <div class="next-block">
+        <p style="margin-bottom: 20px; color: #718096;">Complimenti! Hai completato il corso.</p>
+        <a href="blocco1_sql_basics_select.html">Torna al Blocco 1</a>
+    </div>
+
+</div>
+
+</body>
+</html>

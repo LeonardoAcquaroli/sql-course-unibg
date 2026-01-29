@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL e database relazionali</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Calibri', 'Arial', sans-serif;
+            background: #f5f5f5;
+            padding: 30px;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #1f4788;
+            font-size: 44px;
+            border-bottom: 4px solid #1f4788;
+            padding-bottom: 12.5px;
+            margin-bottom: 29px;
+        }
+
+        h2 {
+            color: #1f4788;
+            font-size: 34px;
+            border-bottom: 3px solid #1f4788;
+            padding-bottom: 10px;
+            margin-top: 60px;
+            margin-bottom: 25px;
+        }
+
+        h3 {
+            color: #2c5aa0;
+            font-size: 24px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .info-box {
+            background: #e8f4f8;
+            padding: 25px;
+            border-left: 5px solid #1f4788;
+            margin: 30px 0;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 16px;
+        }
+
+        th {
+            background: #1f4788;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .block-title {
+            font-weight: bold;
+            color: #1f4788;
+        }
+
+        .open-link {
+            display: inline-block;
+            margin-top: 10px;
+            background: #1f4788;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .open-link:hover {
+            background: #2c5aa0;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            font-size: 17px;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: #1f4788;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #2c5aa0;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+            .controls {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>SQL e database relazionali</h1>
+
+    <div class="info-box">
+        <p><strong>Durata:</strong> 4 ore totali (teoria + esercizi)</p>
+        <p><strong>Destinatari:</strong> Aspiranti Data Analyst / Junior Analyst</p>
+        <p><strong>Obiettivo:</strong> Usare SQL per leggere, filtrare, aggregare e combinare dati per analisi di business</p>
+    </div>
+
+    <h2>Struttura del Corso</h2>
+
+    <table>
+        <tr>
+            <th style="width:25%;">Blocco</th>
+            <th style="width:45%;">Contenuti Essenziali</th>
+            <th style="width:15%;">Teoria</th>
+            <th style="width:15%;">Esercizi</th>
+        </tr>
+
+        <tr>
+            <td class="block-title">
+                Blocco 1<br>SQL Basics & SELECT
+                <a class="open-link" href="blocco1_sql_basics_select.html">Apri blocco →</a>
+            </td>
+            <td>
+                <ul>
+                    <li>Cos'è un database e a cosa serve</li>
+                    <li>Cos'è SQL e perché è usato nell'analisi dati</li>
+                    <li>Tabelle, righe e colonne</li>
+                    <li>SELECT * FROM table</li>
+                    <li>Alias con AS</li>
+                    <li>LIMIT</li>
+                </ul>
+            </td>
+            <td>25 min</td>
+            <td>20 min</td>
+        </tr>
+
+        <tr>
+            <td class="block-title">
+                Blocco 2<br>Filtering & Sorting
+                <a class="open-link" href="blocco2_filtering_sorting.html">Apri blocco →</a>
+            </td>
+            <td>
+                <ul>
+                    <li>WHERE</li>
+                    <li>Operatori di confronto (=, &gt;, &lt;)</li>
+                    <li>AND / OR</li>
+                    <li>IN</li>
+                    <li>IS NULL</li>
+                    <li>ORDER BY ASC / DESC</li>
+                </ul>
+            </td>
+            <td>25 min</td>
+            <td>25 min</td>
+        </tr>
+
+        <tr>
+            <td class="block-title">
+                Blocco 3<br>Aggregazioni
+                <a class="open-link" href="blocco3_aggregazioni.html">Apri blocco →</a>
+            </td>
+            <td>
+                <ul>
+                    <li>Perché aggregare i dati</li>
+                    <li>COUNT, SUM, AVG</li>
+                    <li>GROUP BY</li>
+                    <li>HAVING (introduzione)</li>
+                </ul>
+            </td>
+            <td>20 min</td>
+            <td>25 min</td>
+        </tr>
+
+        <tr>
+            <td class="block-title">
+                Blocco 4<br>JOIN Essenziali
+                <a class="open-link" href="blocco4_join.html">Apri blocco →</a>
+            </td>
+            <td>
+                <ul>
+                    <li>Perché esistono i JOIN</li>
+                    <li>Primary key e foreign key (concetto)</li>
+                    <li>INNER JOIN</li>
+                    <li>RIGHT/LEFT JOIN</li>
+                    <li>Condizione ON</li>
+                    <li>Alias di tabella</li>
+                </ul>
+            </td>
+            <td>25 min</td>
+            <td>25 min</td>
+        </tr>
+    </table>
+
+    <h2>Obiettivi di Apprendimento</h2>
+
+    <table>
+        <tr>
+            <th style="width:35%; background:#1f7847;">Competenza</th>
+            <th style="width:65%; background:#1f7847;">Risultato</th>
+        </tr>
+
+        <tr>
+            <td class="block-title">Lettura dati</td>
+            <td>Esplorare tabelle e selezionare le informazioni rilevanti</td>
+        </tr>
+
+        <tr>
+            <td class="block-title">Filtraggio</td>
+            <td>Applicare condizioni per isolare sottoinsiemi di dati</td>
+        </tr>
+
+        <tr>
+            <td class="block-title">Aggregazione</td>
+            <td>Calcolare metriche e KPI tramite GROUP BY</td>
+        </tr>
+
+        <tr>
+            <td class="block-title">JOIN</td>
+            <td>Combinare tabelle per rispondere a domande di business</td>
+        </tr>
+    </table>
+
+    <div class="info-box">
+        <p><strong>Nota:</strong> Argomenti avanzati per approfondimento: subquery, CTE, funzioni avanzate.</p>
+    </div>
+
+</div>
+
+<div class="controls">
+    <button class="btn" onclick="window.print()">Download PDF</button>
+    <button class="btn" onclick="window.print()">Stampa</button>
+</div>
+
+</body>
+</html>

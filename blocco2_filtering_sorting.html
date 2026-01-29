@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blocco 2 - Filtering & Sorting</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', 'Calibri', Arial, sans-serif; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); min-height: 100vh; padding: 30px; line-height: 1.8; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 50px 60px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .header { text-align: center; margin-bottom: 40px; padding-bottom: 30px; border-bottom: 3px solid #11998e; }
+        .block-number { display: inline-block; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; padding: 10px 30px; border-radius: 30px; font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
+        h1 { color: #2d3748; font-size: 42px; margin-bottom: 10px; }
+        .duration { color: #718096; font-size: 18px; }
+        .duration strong { color: #11998e; }
+        h2 { color: #2d3748; font-size: 28px; margin-top: 50px; margin-bottom: 25px; padding-bottom: 10px; border-bottom: 2px solid #4a5468; display: flex; align-items: center; gap: 15px; }
+        h2::before { content: ''; display: inline-block; width: 8px; height: 35px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 4px; }
+        h3 { color: #4a5568; font-size: 22px; margin-top: 35px; margin-bottom: 15px; }
+        h4 { color: #11998e; font-size: 18px; margin-top: 25px; margin-bottom: 12px; }
+        p { color: #4a5568; font-size: 17px; margin-bottom: 15px; text-align: justify; }
+        .highlight { background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%); padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+        .definition-box { background: linear-gradient(135deg, #11998e15 0%, #38ef7d15 100%); border-left: 5px solid #11998e; padding: 25px 30px; margin: 25px 0; border-radius: 0 15px 15px 0; }
+        .definition-box h4 { color: #11998e; margin-top: 0; margin-bottom: 10px; font-size: 20px; }
+        .definition-box p { margin-bottom: 0; font-size: 17px; }
+        .info-box { background: #ebf8ff; border: 1px solid #90cdf4; padding: 20px 25px; border-radius: 12px; margin: 20px 0; }
+        .info-box.warning { background: #fffaf0; border-color: #f6ad55; }
+        .info-box.danger { background: #fff5f5; border-color: #fc8181; }
+        .info-box-title { font-weight: bold; color: #2b6cb0; margin-bottom: 8px; }
+        .info-box.warning .info-box-title { color: #c05621; }
+        .info-box.danger .info-box-title { color: #c53030; }
+        table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 16px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        th { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; padding: 15px 20px; text-align: left; font-weight: 600; }
+        td { padding: 14px 20px; border-bottom: 1px solid #4a5468; color: #4a5568; }
+        tr:nth-child(even) { background: #f7fafc; }
+        tr:hover { background: #edf2f7; }
+        .code-block { background: #1a202c; border-radius: 12px; margin: 20px 0; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .code-header { background: #2d3748; color: #a0aec0; padding: 10px 20px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+        .code-header::before { content: ''; display: inline-block; width: 12px; height: 12px; background: #48bb78; border-radius: 50%; }
+        pre { margin: 0; padding: 25px; overflow-x: auto; }
+        code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 15px; line-height: 1.6; color: #4a5468; }
+        .keyword { color: #f687b3; font-weight: bold; }
+        .string { color: #68d391; }
+        .comment { color: #718096; font-style: italic; }
+        .number { color: #f6ad55; }
+        .operator { color: #fbb6ce; }
+        ul, ol { margin: 15px 0 15px 25px; color: #4a5568; }
+        li { margin-bottom: 10px; font-size: 17px; }
+        .exercise-section { background: linear-gradient(135deg, #f093fb15 0%, #f5576c15 100%); border: 2px solid #f093fb; border-radius: 15px; padding: 30px; margin: 40px 0; }
+        .exercise-section h2 { color: #b83280; border-bottom-color: #f093fb; }
+        .exercise-section h2::before { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .exercise { background: white; border-radius: 12px; padding: 25px; margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .exercise-number { display: inline-block; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; margin-bottom: 15px; }
+        .exercise-text { font-size: 17px; color: #2d3748; margin-bottom: 15px; }
+        details { margin-top: 15px; }
+        summary { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; }
+        summary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(17, 153, 142, 0.4); }
+        details[open] summary { border-radius: 8px 8px 0 0; }
+        .solution { background: #f7fafc; border: 1px solid #4a5468; border-top: none; border-radius: 0 0 8px 8px; padding: 20px; }
+        .data-table { background: white; margin: 20px 0; }
+        .data-table th { background: #4a5568; }
+        .order-box { background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); border: 2px dashed #667eea; padding: 25px; border-radius: 12px; margin: 25px 0; font-family: 'Consolas', monospace; }
+        .order-box h4 { color: #667eea; margin-bottom: 15px; }
+        .next-block { text-align: center; margin-top: 50px; padding-top: 30px; border-top: 2px solid #4a5468; }
+        .next-block a { display: inline-block; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 18px; transition: all 0.3s ease; }
+        .next-block a:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(17, 153, 142, 0.4); }
+        .analogy { background: #faf5ff; border-left: 5px solid #9f7aea; padding: 20px 25px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .analogy-title { color: #6b46c1; font-weight: bold; margin-bottom: 10px; }
+        .top-nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 14px; background: #f7fafc; border: 1px solid rgba(0,0,0,0.08); margin-bottom: 20px; }
+        .top-nav a { text-decoration: none; font-weight: 600; color: #2d3748; padding: 8px 12px; border-radius: 10px; }
+        .top-nav a:hover { background: rgba(0,0,0,0.06); }
+        .top-nav .nav-home { color: #11998e; }
+        .top-nav .nav-links { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+        .top-nav .nav-links a.active { background: #11998e; color: white; }
+        @media print { body { background: white; padding: 0; } .container { box-shadow: none; padding: 30px; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="top-nav">
+        <a class="nav-home" href="index.html">← Programma</a>
+        <div class="nav-links">
+            <a href="blocco1_sql_basics_select.html">Blocco 1</a>
+            <a class="active" href="blocco2_filtering_sorting.html">Blocco 2</a>
+            <a href="blocco3_aggregazioni.html">Blocco 3</a>
+            <a href="blocco4_join.html">Blocco 4</a>
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="block-number">Blocco 2 di 4</div>
+        <h1>Filtering & Sorting</h1>
+        <p class="duration"><strong>Durata:</strong> 25 minuti teoria + 25 minuti esercizi</p>
+    </div>
+
+    <h2>2.1 WHERE - Filtrare i Dati</h2>
+
+    <div class="definition-box">
+        <h4>Definizione</h4>
+        <p>La clausola <code>WHERE</code> filtra i risultati della query, restituendo <strong>solo le righe che soddisfano una condizione specifica</strong>. E il principale strumento per selezionare sottoinsiemi di dati.</p>
+    </div>
+
+    <p>Finora abbiamo visto come estrarre dati con SELECT. Ma nelle situazioni reali, le tabelle contengono migliaia o milioni di righe, e raramente ci serve vedere tutto. La clausola <span class="highlight">WHERE</span> ci permette di specificare esattamente quali righe vogliamo.</p>
+
+    <div class="analogy">
+        <div class="analogy-title">Analogia pratica</div>
+        <p>Se SELECT e "mostrami i libri", WHERE e "mostrami solo i libri di fantascienza" o "mostrami solo i libri pubblicati dopo il 2020". Aggiunge una condizione al tuo comando.</p>
+    </div>
+
+    <h3>Sintassi</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Sintassi WHERE</div>
+        <pre><code><span class="keyword">SELECT</span> colonne
+<span class="keyword">FROM</span> tabella
+<span class="keyword">WHERE</span> condizione;</code></pre>
+    </div>
+
+    <h3>Esempi base</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Filtrare per valore testuale</div>
+        <pre><code><span class="comment">-- Mostra solo i dipendenti del dipartimento IT</span>
+<span class="keyword">SELECT</span> * 
+<span class="keyword">FROM</span> dipendenti 
+<span class="keyword">WHERE</span> dipartimento <span class="operator">=</span> <span class="string">'IT'</span>;</code></pre>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Filtrare per valore numerico</div>
+        <pre><code><span class="comment">-- Mostra solo i prodotti con prezzo superiore a 100</span>
+<span class="keyword">SELECT</span> * 
+<span class="keyword">FROM</span> prodotti 
+<span class="keyword">WHERE</span> prezzo <span class="operator">></span> <span class="number">100</span>;</code></pre>
+    </div>
+
+    <h2>2.2 Operatori di confronto</h2>
+
+    <p>Gli operatori di confronto sono il cuore delle condizioni WHERE. Ti permettono di confrontare valori nelle colonne con valori specifici.</p>
+
+    <table>
+        <tr>
+            <th>Operatore</th>
+            <th>Significato</th>
+            <th>Esempio SQL</th>
+            <th>Righe restituite</th>
+        </tr>
+        <tr>
+            <td><code>=</code></td>
+            <td>Uguale a</td>
+            <td><code>WHERE categoria = 'Elettronica'</code></td>
+            <td>Solo prodotti di categoria "Elettronica"</td>
+        </tr>
+        <tr>
+            <td><code>&lt;&gt;</code> o <code>!=</code></td>
+            <td>Diverso da</td>
+            <td><code>WHERE stato &lt;&gt; 'annullato'</code></td>
+            <td>Tutti gli ordini tranne quelli annullati</td>
+        </tr>
+        <tr>
+            <td><code>&gt;</code></td>
+            <td>Maggiore di</td>
+            <td><code>WHERE stipendio > 40000</code></td>
+            <td>Dipendenti con stipendio oltre 40000</td>
+        </tr>
+        <tr>
+            <td><code>&lt;</code></td>
+            <td>Minore di</td>
+            <td><code>WHERE quantita < 10</code></td>
+            <td>Prodotti con meno di 10 pezzi in stock</td>
+        </tr>
+        <tr>
+            <td><code>&gt;=</code></td>
+            <td>Maggiore o uguale</td>
+            <td><code>WHERE eta >= 18</code></td>
+            <td>Utenti maggiorenni (18 incluso)</td>
+        </tr>
+        <tr>
+            <td><code>&lt;=</code></td>
+            <td>Minore o uguale</td>
+            <td><code>WHERE sconto <= 50</code></td>
+            <td>Prodotti con sconto fino al 50%</td>
+        </tr>
+    </table>
+
+    <div class="info-box warning">
+        <div class="info-box-title">Regola fondamentale</div>
+        <p>I valori testuali (stringhe) devono essere racchiusi tra <strong>apici singoli</strong> <code>'valore'</code>. I numeri NO.</p>
+    </div>
+
+    <h3>Confronto con date</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Confronto con date</div>
+        <pre><code><span class="comment">-- Dipendenti assunti dopo il 1 gennaio 2020</span>
+<span class="keyword">SELECT</span> * 
+<span class="keyword">FROM</span> dipendenti 
+<span class="keyword">WHERE</span> data_assunzione <span class="operator">></span> <span class="string">'2020-01-01'</span>;
+
+<span class="comment">-- Ordini dell'anno 2023</span>
+<span class="keyword">SELECT</span> * 
+<span class="keyword">FROM</span> ordini 
+<span class="keyword">WHERE</span> data_ordine <span class="operator">>=</span> <span class="string">'2023-01-01'</span> 
+  <span class="keyword">AND</span> data_ordine <span class="operator"><=</span> <span class="string">'2023-12-31'</span>;</code></pre>
+    </div>
+
+    <h2>2.3 AND / OR - Combinare condizioni</h2>
+
+    <p>Spesso una singola condizione non basta. Gli operatori logici <code>AND</code> e <code>OR</code> permettono di combinare piu condizioni nella stessa clausola WHERE.</p>
+
+    <div class="definition-box">
+        <h4>AND</h4>
+        <p>Restituisce la riga <strong>solo se TUTTE le condizioni sono vere</strong>. Basta che una sia falsa perche la riga venga esclusa.</p>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Operatore AND</div>
+        <pre><code><span class="comment">-- Dipendenti del dipartimento IT con stipendio superiore a 40000</span>
+<span class="keyword">SELECT</span> * 
+<span class="keyword">FROM</span> dipendenti 
+<span class="keyword">WHERE</span> dipartimento <span class="operator">=</span> <span class="string">'IT'</span> <span class="keyword">AND</span> stipendio <span class="operator">></span> <span class="number">40000</span>;</code></pre>
+    </div>
+
+    <div class="definition-box">
+        <h4>OR</h4>
+        <p>Restituisce la riga <strong>se ALMENO UNA delle condizioni e vera</strong>. Basta che una sia vera perche la riga venga inclusa.</p>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Operatore OR</div>
+        <pre><code><span class="comment">-- Dipendenti del dipartimento IT oppure del Marketing</span>
+<span class="keyword">SELECT</span> * 
+<span class="keyword">FROM</span> dipendenti 
+<span class="keyword">WHERE</span> dipartimento <span class="operator">=</span> <span class="string">'IT'</span> <span class="keyword">OR</span> dipartimento <span class="operator">=</span> <span class="string">'Marketing'</span>;</code></pre>
+    </div>
+
+    <div class="info-box danger">
+        <div class="info-box-title">Attenzione: priorita degli operatori</div>
+        <p><code>AND</code> ha priorita su <code>OR</code>! Senza parentesi, il risultato potrebbe essere diverso da quello che ti aspetti. <strong>Usa sempre le parentesi</strong> quando combini AND e OR.</p>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Combinare AND e OR con parentesi</div>
+        <pre><code><span class="comment">-- Dipendenti IT con stipendio > 40000 OPPURE qualsiasi Marketing</span>
+<span class="keyword">SELECT</span> * 
+<span class="keyword">FROM</span> dipendenti 
+<span class="keyword">WHERE</span> (dipartimento <span class="operator">=</span> <span class="string">'IT'</span> <span class="keyword">AND</span> stipendio <span class="operator">></span> <span class="number">40000</span>) 
+   <span class="keyword">OR</span> dipartimento <span class="operator">=</span> <span class="string">'Marketing'</span>;</code></pre>
+    </div>
+
+    <h2>2.4 IN - Verificare appartenenza a un elenco</h2>
+
+    <div class="definition-box">
+        <h4>Definizione</h4>
+        <p>L'operatore <code>IN</code> verifica se un valore appartiene a un elenco predefinito. E una <strong>sintassi piu pulita e leggibile</strong> rispetto a molteplici condizioni OR.</p>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Con OR (verboso)</div>
+        <pre><code><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dipendenti 
+<span class="keyword">WHERE</span> dipartimento <span class="operator">=</span> <span class="string">'IT'</span> 
+   <span class="keyword">OR</span> dipartimento <span class="operator">=</span> <span class="string">'Marketing'</span> 
+   <span class="keyword">OR</span> dipartimento <span class="operator">=</span> <span class="string">'Vendite'</span>;</code></pre>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Con IN (elegante)</div>
+        <pre><code><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dipendenti 
+<span class="keyword">WHERE</span> dipartimento <span class="keyword">IN</span> (<span class="string">'IT'</span>, <span class="string">'Marketing'</span>, <span class="string">'Vendite'</span>);</code></pre>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - NOT IN per escludere</div>
+        <pre><code><span class="comment">-- Tutti i dipendenti TRANNE quelli di HR e Amministrazione</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dipendenti 
+<span class="keyword">WHERE</span> dipartimento <span class="keyword">NOT IN</span> (<span class="string">'HR'</span>, <span class="string">'Amministrazione'</span>);</code></pre>
+    </div>
+
+    <h2>2.5 IS NULL - Gestire i valori mancanti</h2>
+
+    <div class="definition-box">
+        <h4>Cos'e NULL?</h4>
+        <p><code>NULL</code> in SQL rappresenta l'<strong>assenza di un valore</strong>. Non e zero, non e una stringa vuota, non e la parola "null" - e proprio "nessun dato presente".</p>
+    </div>
+
+    <table>
+        <tr>
+            <th>NULL non e...</th>
+            <th>Esempio</th>
+            <th>Differenza</th>
+        </tr>
+        <tr>
+            <td>Zero (0)</td>
+            <td><code>stipendio = 0</code></td>
+            <td>Zero e un valore numerico. NULL significa "non sappiamo lo stipendio"</td>
+        </tr>
+        <tr>
+            <td>Stringa vuota ('')</td>
+            <td><code>email = ''</code></td>
+            <td>Stringa vuota e un valore stringa. NULL significa "email non inserita"</td>
+        </tr>
+    </table>
+
+    <div class="info-box danger">
+        <div class="info-box-title">Errore comune</div>
+        <p>NULL non puo essere confrontato con <code>=</code>. La query <code>WHERE bonus = NULL</code> non funziona! Usa sempre <code>IS NULL</code> o <code>IS NOT NULL</code>.</p>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Gestione NULL</div>
+        <pre><code><span class="comment">-- SBAGLIATO: non funziona!</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dipendenti <span class="keyword">WHERE</span> bonus <span class="operator">=</span> <span class="keyword">NULL</span>;
+
+<span class="comment">-- CORRETTO: trovare righe CON valori mancanti</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dipendenti <span class="keyword">WHERE</span> bonus <span class="keyword">IS NULL</span>;
+
+<span class="comment">-- CORRETTO: trovare righe SENZA valori mancanti</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dipendenti <span class="keyword">WHERE</span> bonus <span class="keyword">IS NOT NULL</span>;</code></pre>
+    </div>
+
+    <h2>2.6 ORDER BY - Ordinare i risultati</h2>
+
+    <div class="definition-box">
+        <h4>Definizione</h4>
+        <p>La clausola <code>ORDER BY</code> ordina i risultati della query in base ai valori di una o piu colonne. Puoi scegliere l'ordine crescente (ASC) o decrescente (DESC).</p>
+    </div>
+
+    <table>
+        <tr>
+            <th>Direzione</th>
+            <th>Significato</th>
+            <th>Numeri</th>
+            <th>Testo</th>
+            <th>Date</th>
+        </tr>
+        <tr>
+            <td><code>ASC</code> (default)</td>
+            <td>Crescente (Ascending)</td>
+            <td>1, 2, 3...</td>
+            <td>A, B, C...</td>
+            <td>Piu vecchio prima</td>
+        </tr>
+        <tr>
+            <td><code>DESC</code></td>
+            <td>Decrescente (Descending)</td>
+            <td>...3, 2, 1</td>
+            <td>...C, B, A</td>
+            <td>Piu recente prima</td>
+        </tr>
+    </table>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Ordinamento</div>
+        <pre><code><span class="comment">-- Dipendenti in ordine alfabetico per cognome</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dipendenti <span class="keyword">ORDER BY</span> cognome <span class="keyword">ASC</span>;
+
+<span class="comment">-- Prodotti dal piu caro al meno caro</span>
+<span class="keyword">SELECT</span> nome_prodotto, prezzo 
+<span class="keyword">FROM</span> prodotti 
+<span class="keyword">ORDER BY</span> prezzo <span class="keyword">DESC</span>;
+
+<span class="comment">-- Ordinamento multiplo: prima per dipartimento, poi per stipendio</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dipendenti 
+<span class="keyword">ORDER BY</span> dipartimento <span class="keyword">ASC</span>, stipendio <span class="keyword">DESC</span>;</code></pre>
+    </div>
+
+    <h3>Combinazione completa: WHERE + ORDER BY + LIMIT</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Query completa</div>
+        <pre><code><span class="comment">-- Top 5 prodotti piu costosi della categoria Elettronica</span>
+<span class="keyword">SELECT</span> nome_prodotto, prezzo 
+<span class="keyword">FROM</span> prodotti 
+<span class="keyword">WHERE</span> categoria <span class="operator">=</span> <span class="string">'Elettronica'</span>
+<span class="keyword">ORDER BY</span> prezzo <span class="keyword">DESC</span>
+<span class="keyword">LIMIT</span> <span class="number">5</span>;</code></pre>
+    </div>
+
+    <div class="order-box">
+        <h4>Ordine corretto delle clausole SQL</h4>
+        <pre>
+SELECT   colonne
+FROM     tabella
+WHERE    condizione
+ORDER BY colonna [ASC|DESC]
+LIMIT    n;
+        </pre>
+        <p style="margin-top: 15px; color: #4a5568;"><strong>Ricorda:</strong> questo ordine e obbligatorio!</p>
+    </div>
+
+    <div class="exercise-section">
+        <h2>Esercizi blocco 2</h2>
+        
+        <p>Usa la tabella <code>ordini</code>:</p>
+
+        <table class="data-table">
+            <tr><th>id_ordine</th><th>id_cliente</th><th>prodotto</th><th>quantita</th><th>prezzo_unitario</th><th>data_ordine</th><th>stato</th></tr>
+            <tr><td>1</td><td>101</td><td>Laptop</td><td>2</td><td>899.99</td><td>2024-01-15</td><td>completato</td></tr>
+            <tr><td>2</td><td>102</td><td>Mouse</td><td>5</td><td>25.00</td><td>2024-01-16</td><td>completato</td></tr>
+            <tr><td>3</td><td>101</td><td>Monitor</td><td>1</td><td>350.00</td><td>2024-01-20</td><td>spedito</td></tr>
+            <tr><td>4</td><td>103</td><td>Tastiera</td><td>3</td><td>75.00</td><td>2024-02-01</td><td>in_attesa</td></tr>
+            <tr><td>5</td><td>104</td><td>Laptop</td><td>1</td><td>899.99</td><td>2024-02-10</td><td>completato</td></tr>
+            <tr><td>6</td><td>102</td><td>Cuffie</td><td>2</td><td>NULL</td><td>2024-02-15</td><td>annullato</td></tr>
+        </table>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 2.1</div>
+            <p class="exercise-text">Trova tutti gli ordini con <strong>quantita maggiore di 2</strong>.</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> ordini <span class="keyword">WHERE</span> quantita <span class="operator">></span> <span class="number">2</span>;</code></pre>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 2.2</div>
+            <p class="exercise-text">Trova tutti gli ordini <strong>completati</strong> con <strong>prezzo unitario superiore a 100</strong>.</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> ordini 
+<span class="keyword">WHERE</span> stato <span class="operator">=</span> <span class="string">'completato'</span> <span class="keyword">AND</span> prezzo_unitario <span class="operator">></span> <span class="number">100</span>;</code></pre>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 2.3</div>
+            <p class="exercise-text">Trova tutti gli ordini che sono <strong>"completato" oppure "spedito"</strong>.</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> ordini 
+<span class="keyword">WHERE</span> stato <span class="keyword">IN</span> (<span class="string">'completato'</span>, <span class="string">'spedito'</span>);</code></pre>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 2.4</div>
+            <p class="exercise-text">Trova gli ordini <strong>senza prezzo unitario definito</strong> (NULL).</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> ordini <span class="keyword">WHERE</span> prezzo_unitario <span class="keyword">IS NULL</span>;</code></pre>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 2.5</div>
+            <p class="exercise-text">Mostra tutti gli ordini ordinati per <strong>data (dal piu recente)</strong> e limita a <strong>3 risultati</strong>.</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> ordini 
+<span class="keyword">ORDER BY</span> data_ordine <span class="keyword">DESC</span>
+<span class="keyword">LIMIT</span> <span class="number">3</span>;</code></pre>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 2.6</div>
+            <p class="exercise-text">Trova tutti gli ordini del <strong>cliente 101 o 102</strong>, con <strong>quantita >= 2</strong>, ordinati per <strong>prezzo unitario decrescente</strong>.</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> ordini 
+<span class="keyword">WHERE</span> id_cliente <span class="keyword">IN</span> (<span class="number">101</span>, <span class="number">102</span>) <span class="keyword">AND</span> quantita <span class="operator">>=</span> <span class="number">2</span>
+<span class="keyword">ORDER BY</span> prezzo_unitario <span class="keyword">DESC</span>;</code></pre>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <h2>Riepilogo blocco 2</h2>
+
+    <table>
+        <tr><th>Concetto</th><th>Sintassi</th><th>Esempio</th></tr>
+        <tr><td>Filtrare righe</td><td><code>WHERE condizione</code></td><td><code>WHERE prezzo > 100</code></td></tr>
+        <tr><td>Condizioni multiple (tutte)</td><td><code>AND</code></td><td><code>WHERE a = 1 AND b = 2</code></td></tr>
+        <tr><td>Condizioni multiple (almeno una)</td><td><code>OR</code></td><td><code>WHERE a = 1 OR b = 2</code></td></tr>
+        <tr><td>Appartenenza a lista</td><td><code>IN (valori)</code></td><td><code>WHERE stato IN ('a', 'b')</code></td></tr>
+        <tr><td>Valore mancante</td><td><code>IS NULL</code></td><td><code>WHERE email IS NULL</code></td></tr>
+        <tr><td>Valore presente</td><td><code>IS NOT NULL</code></td><td><code>WHERE email IS NOT NULL</code></td></tr>
+        <tr><td>Ordinamento</td><td><code>ORDER BY col [ASC|DESC]</code></td><td><code>ORDER BY prezzo DESC</code></td></tr>
+    </table>
+
+    <div class="next-block">
+        <p style="margin-bottom: 20px; color: #718096;">Prossimo argomento:</p>
+        <a href="blocco3_aggregazioni.html">Blocco 3: Aggregazioni</a>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blocco 3 - Aggregazioni</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Calibri', Arial, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 30px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px 60px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #f093fb;
+        }
+
+        .block-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .duration {
+            color: #718096;
+            font-size: 18px;
+        }
+
+        .duration strong {
+            color: #f093fb;
+        }
+
+        h2 {
+            color: #2d3748;
+            font-size: 28px;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4a5468;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 35px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 4px;
+        }
+
+        h3 {
+            color: #4a5568;
+            font-size: 22px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #f093fb;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: #4a5568;
+            font-size: 17px;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #f093fb15 0%, #f5576c15 100%);
+            border-left: 5px solid #f093fb;
+            padding: 25px 30px;
+            margin: 25px 0;
+            border-radius: 0 15px 15px 0;
+        }
+
+        .definition-box h4 {
+            color: #f093fb;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .definition-box p {
+            margin-bottom: 0;
+            font-size: 17px;
+        }
+
+        .info-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .info-box.warning {
+            background: #fffaf0;
+            border-color: #f6ad55;
+        }
+
+        .info-box.success {
+            background: #f0fff4;
+            border-color: #68d391;
+        }
+
+        .info-box.danger {
+            background: #fff5f5;
+            border-color: #fc8181;
+        }
+
+        .info-box-title {
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-box.warning .info-box-title {
+            color: #c05621;
+        }
+
+        .info-box.success .info-box-title {
+            color: #276749;
+        }
+
+        .info-box.danger .info-box-title {
+            color: #c53030;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 16px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #4a5468;
+            color: #4a5568;
+        }
+
+        tr:nth-child(even) {
+            background: #f7fafc;
+        }
+
+        tr:hover {
+            background: #edf2f7;
+        }
+
+        .code-block {
+            background: #1a202c;
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .code-header {
+            background: #2d3748;
+            color: #a0aec0;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .code-header::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #48bb78;
+            border-radius: 50%;
+        }
+
+        pre {
+            margin: 0;
+            padding: 25px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #4a5468;
+        }
+
+        .keyword {
+            color: #f687b3;
+            font-weight: bold;
+        }
+
+        .string {
+            color: #68d391;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            background: #f7fafc;
+            border: 1px solid rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .top-nav a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #2d3748;
+            padding: 8px 12px;
+            border-radius: 10px;
+        }
+
+        .top-nav a:hover {
+            background: rgba(0,0,0,0.06);
+        }
+
+        .top-nav .nav-home {
+            color: #f093fb;
+        }
+
+        .top-nav .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .top-nav .nav-links a.active {
+            background: #f093fb;
+            color: white;
+        }
+
+        .comment {
+            color: #718096;
+            font-style: italic;
+        }
+
+        .function {
+            color: #63b3ed;
+        }
+
+        .number {
+            color: #f6ad55;
+        }
+
+        .operator {
+            color: #fbb6ce;
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 25px;
+            color: #4a5568;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 17px;
+        }
+
+        .exercise-section {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px solid #667eea;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .exercise-section h2 {
+            color: #5a67d8;
+            border-bottom-color: #667eea;
+        }
+
+        .exercise-section h2::before {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .exercise {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .exercise-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .exercise-text {
+            font-size: 17px;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        details {
+            margin-top: 15px;
+        }
+
+        summary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        summary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(240, 147, 251, 0.4);
+        }
+
+        details[open] summary {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .solution {
+            background: #f7fafc;
+            border: 1px solid #4a5468;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            padding: 20px;
+        }
+
+        .data-table {
+            background: white;
+            margin: 20px 0;
+        }
+
+        .data-table th {
+            background: #4a5568;
+        }
+
+        .comparison-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .comparison-item {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid #4a5468;
+        }
+
+        .comparison-item.bad {
+            border-color: #fc8181;
+            background: #fff5f5;
+        }
+
+        .comparison-item.good {
+            border-color: #68d391;
+            background: #f0fff4;
+        }
+
+        .comparison-item h4 {
+            margin-top: 0;
+        }
+
+        .next-block {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #4a5468;
+        }
+
+        .next-block a {
+            display: inline-block;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .next-block a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.4);
+        }
+
+        .analogy {
+            background: #faf5ff;
+            border-left: 5px solid #9f7aea;
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .analogy-title {
+            color: #6b46c1;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .order-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px dashed #667eea;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-family: 'Consolas', monospace;
+        }
+
+        .order-box h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .function-card {
+            background: linear-gradient(135deg, #667eea08 0%, #764ba208 100%);
+            border: 1px solid #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .function-card h4 {
+            color: #5a67d8;
+            margin-top: 0;
+            font-size: 20px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="top-nav">
+        <a class="nav-home" href="index.html">← Programma</a>
+        <div class="nav-links">
+            <a href="blocco1_sql_basics_select.html">Blocco 1</a>
+            <a href="blocco2_filtering_sorting.html">Blocco 2</a>
+            <a class="active" href="blocco3_aggregazioni.html">Blocco 3</a>
+            <a href="blocco4_join.html">Blocco 4</a>
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="block-number">Blocco 3 di 4</div>
+        <h1>Aggregazioni</h1>
+        <p class="duration"><strong>Durata:</strong> 20 minuti teoria + 25 minuti esercizi</p>
+    </div>
+
+    <!-- SEZIONE 3.1 -->
+    <h2>3.1 Perche aggregare i dati</h2>
+
+    <div class="definition-box">
+        <h4>Il problema</h4>
+        <p>I dati grezzi sono spesso troppo dettagliatiper rispondere a domande di business. Un database con milioni di ordini non ti dice direttamente "quanto abbiamo fatturato questo mese" - devi <strong>aggregare</strong> i dati per ottenere questa informazione.</p>
+    </div>
+
+    <p>Immagina di avere una tabella con 100.000 ordini. Se il tuo capo ti chiede:</p>
+    <ul>
+        <li>"Quanti ordini abbiamo ricevuto?"</li>
+        <li>"Qual e il fatturato totale?"</li>
+        <li>"Qual e lo stipendio medio per dipartimento?"</li>
+    </ul>
+    <p>Non puoi rispondere guardando le singole righe - devi <span class="highlight">aggregare</span>, cioe condensare molte righe in un singolo valore riassuntivo.</p>
+
+    <div class="analogy">
+        <div class="analogy-title">Analogia pratica</div>
+        <p>Le funzioni di aggregazione sono come le statistiche di una partita di calcio: invece di elencare ogni passaggio, tiro e fallo, ti danno un riepilogo: "5 gol segnati, 60% possesso palla, 15 tiri in porta". Condensano molti eventi in pochi numeri significativi.</p>
+    </div>
+
+    <h3>Domande di business e funzioni SQL</h3>
+
+    <table>
+        <tr>
+            <th>Domanda di business</th>
+            <th>Funzione SQL</th>
+            <th>Cosa fa</th>
+        </tr>
+        <tr>
+            <td>Quanti clienti abbiamo?</td>
+            <td><code>COUNT(*)</code></td>
+            <td>Conta le righe</td>
+        </tr>
+        <tr>
+            <td>Qual e il fatturato totale?</td>
+            <td><code>SUM(importo)</code></td>
+            <td>Somma i valori</td>
+        </tr>
+        <tr>
+            <td>Qual e lo stipendio medio?</td>
+            <td><code>AVG(stipendio)</code></td>
+            <td>Calcola la media</td>
+        </tr>
+        <tr>
+            <td>Qual e il prezzo piu alto?</td>
+            <td><code>MAX(prezzo)</code></td>
+            <td>Trova il massimo</td>
+        </tr>
+        <tr>
+            <td>Qual e la quantita minima?</td>
+            <td><code>MIN(quantita)</code></td>
+            <td>Trova il minimo</td>
+        </tr>
+    </table>
+
+    <!-- SEZIONE 3.2 -->
+    <h2>3.2 COUNT, SUM, AVG - Le funzioni fondamentali</h2>
+
+    <div class="function-card">
+        <h4>COUNT - Contare le righe</h4>
+        <p><code>COUNT</code> conta quante righe soddisfano i criteri della query. E la funzione piu usata per rispondere a domande come "quanti...?"</p>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - COUNT</div>
+        <pre><code><span class="comment">-- Contare TUTTE le righe della tabella</span>
+<span class="keyword">SELECT</span> <span class="function">COUNT</span>(*) <span class="keyword">FROM</span> dipendenti;
+<span class="comment">-- Risultato: 150 (se ci sono 150 dipendenti)</span>
+
+<span class="comment">-- Contare solo i valori NON NULL di una colonna specifica</span>
+<span class="keyword">SELECT</span> <span class="function">COUNT</span>(email) <span class="keyword">FROM</span> clienti;
+<span class="comment">-- Risultato: 120 (se 30 clienti non hanno email)</span>
+
+<span class="comment">-- Contare valori DISTINTI (unici)</span>
+<span class="keyword">SELECT</span> <span class="function">COUNT</span>(<span class="keyword">DISTINCT</span> dipartimento) <span class="keyword">FROM</span> dipendenti;
+<span class="comment">-- Risultato: 5 (se ci sono 5 dipartimenti diversi)</span>
+
+<span class="comment">-- Contare con condizione WHERE</span>
+<span class="keyword">SELECT</span> <span class="function">COUNT</span>(*) <span class="keyword">AS</span> ordini_completati
+<span class="keyword">FROM</span> ordini 
+<span class="keyword">WHERE</span> stato <span class="operator">=</span> <span class="string">'completato'</span>;</code></pre>
+    </div>
+
+    <div class="info-box">
+        <div class="info-box-title">COUNT(*) vs COUNT(colonna)</div>
+        <ul>
+            <li><code>COUNT(*)</code> - conta TUTTE le righe, incluse quelle con valori NULL</li>
+            <li><code>COUNT(colonna)</code> - conta solo le righe dove quella colonna NON e NULL</li>
+            <li><code>COUNT(DISTINCT colonna)</code> - conta solo i valori unici (senza duplicati)</li>
+        </ul>
+    </div>
+
+    <div class="function-card">
+        <h4>SUM - Sommare valori</h4>
+        <p><code>SUM</code> calcola la somma di tutti i valori in una colonna numerica. Essenziale per calcolare totali come fatturato, costi, quantita.</p>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - SUM</div>
+        <pre><code><span class="comment">-- Fatturato totale (somma di tutti gli importi)</span>
+<span class="keyword">SELECT</span> <span class="function">SUM</span>(totale) <span class="keyword">AS</span> fatturato_totale 
+<span class="keyword">FROM</span> ordini;
+
+<span class="comment">-- Costo totale stipendi del dipartimento IT</span>
+<span class="keyword">SELECT</span> <span class="function">SUM</span>(stipendio) <span class="keyword">AS</span> costo_stipendi_it
+<span class="keyword">FROM</span> dipendenti 
+<span class="keyword">WHERE</span> dipartimento <span class="operator">=</span> <span class="string">'IT'</span>;
+
+<span class="comment">-- Somma con calcolo: quantita * prezzo unitario</span>
+<span class="keyword">SELECT</span> <span class="function">SUM</span>(quantita * prezzo_unitario) <span class="keyword">AS</span> valore_totale
+<span class="keyword">FROM</span> ordini;</code></pre>
+    </div>
+
+    <div class="function-card">
+        <h4>AVG - Calcolare la media</h4>
+        <p><code>AVG</code> (average) calcola la media aritmetica dei valori. Utile per metriche come prezzo medio, stipendio medio, durata media.</p>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - AVG</div>
+        <pre><code><span class="comment">-- Stipendio medio aziendale</span>
+<span class="keyword">SELECT</span> <span class="function">AVG</span>(stipendio) <span class="keyword">AS</span> stipendio_medio 
+<span class="keyword">FROM</span> dipendenti;
+
+<span class="comment">-- Prezzo medio dei prodotti elettronici</span>
+<span class="keyword">SELECT</span> <span class="function">AVG</span>(prezzo) <span class="keyword">AS</span> prezzo_medio
+<span class="keyword">FROM</span> prodotti 
+<span class="keyword">WHERE</span> categoria <span class="operator">=</span> <span class="string">'Elettronica'</span>;
+
+<span class="comment">-- Voto medio degli studenti</span>
+<span class="keyword">SELECT</span> <span class="function">AVG</span>(voto) <span class="keyword">AS</span> media_voti
+<span class="keyword">FROM</span> esami 
+<span class="keyword">WHERE</span> voto <span class="keyword">IS NOT NULL</span>;</code></pre>
+    </div>
+
+    <div class="info-box warning">
+        <div class="info-box-title">Attenzione: AVG ignora i NULL</div>
+        <p>La funzione AVG ignora automaticamente i valori NULL nel calcolo della media. Se hai 10 righe ma 3 hanno valore NULL, la media viene calcolata sulle 7 righe rimanenti.</p>
+    </div>
+
+    <h3>MAX e MIN - Valori estremi</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL - MAX e MIN</div>
+        <pre><code><span class="comment">-- Stipendio piu alto in azienda</span>
+<span class="keyword">SELECT</span> <span class="function">MAX</span>(stipendio) <span class="keyword">AS</span> stipendio_massimo <span class="keyword">FROM</span> dipendenti;
+
+<span class="comment">-- Prezzo piu basso tra i prodotti</span>
+<span class="keyword">SELECT</span> <span class="function">MIN</span>(prezzo) <span class="keyword">AS</span> prezzo_minimo <span class="keyword">FROM</span> prodotti;
+
+<span class="comment">-- Data ordine piu recente</span>
+<span class="keyword">SELECT</span> <span class="function">MAX</span>(data_ordine) <span class="keyword">AS</span> ultimo_ordine <span class="keyword">FROM</span> ordini;
+
+<span class="comment">-- Data ordine piu vecchio</span>
+<span class="keyword">SELECT</span> <span class="function">MIN</span>(data_ordine) <span class="keyword">AS</span> primo_ordine <span class="keyword">FROM</span> ordini;</code></pre>
+    </div>
+
+    <h3>Combinare piu aggregazioni</h3>
+
+    <p>Puoi usare piu funzioni di aggregazione nella stessa query per ottenere un riepilogo completo:</p>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Riepilogo completo</div>
+        <pre><code><span class="keyword">SELECT</span> 
+    <span class="function">COUNT</span>(*) <span class="keyword">AS</span> totale_dipendenti,
+    <span class="function">AVG</span>(stipendio) <span class="keyword">AS</span> stipendio_medio,
+    <span class="function">MIN</span>(stipendio) <span class="keyword">AS</span> stipendio_minimo,
+    <span class="function">MAX</span>(stipendio) <span class="keyword">AS</span> stipendio_massimo,
+    <span class="function">SUM</span>(stipendio) <span class="keyword">AS</span> costo_totale_stipendi
+<span class="keyword">FROM</span> dipendenti;</code></pre>
+    </div>
+
+    <p><strong>Risultato (esempio):</strong></p>
+    <table class="data-table">
+        <tr>
+            <th>totale_dipendenti</th>
+            <th>stipendio_medio</th>
+            <th>stipendio_minimo</th>
+            <th>stipendio_massimo</th>
+            <th>costo_totale_stipendi</th>
+        </tr>
+        <tr>
+            <td>150</td>
+            <td>42500.00</td>
+            <td>28000</td>
+            <td>95000</td>
+            <td>6375000</td>
+        </tr>
+    </table>
+
+    <!-- SEZIONE 3.3 -->
+    <h2>3.3 GROUP BY - Aggregare per gruppi</h2>
+
+    <div class="definition-box">
+        <h4>Il problema</h4>
+        <p>Le funzioni di aggregazione da sole restituiscono<strong>un singolo valore</strong> per tutta la tabella. Ma spesso vogliamo aggregare <strong>per categoria</strong>: media stipendio <em>per dipartimento</em>, totale vendite <em>per regione</em>, numero ordini <em>per cliente</em>.</p>
+    </div>
+
+    <div class="comparison-box">
+        <div class="comparison-item">
+            <h4>Senza GROUP BY</h4>
+            <div class="code-block">
+                <div class="code-header">SQL</div>
+                <pre><code><span class="keyword">SELECT</span> <span class="function">AVG</span>(stipendio) 
+<span class="keyword">FROM</span> dipendenti;</code></pre>
+            </div>
+            <p>Risultato: <strong>42500</strong> (media globale)</p>
+        </div>
+        <div class="comparison-item good">
+            <h4>Con GROUP BY</h4>
+            <div class="code-block">
+                <div class="code-header">SQL</div>
+                <pre><code><span class="keyword">SELECT</span> dipartimento, <span class="function">AVG</span>(stipendio)
+<span class="keyword">FROM</span> dipendenti
+<span class="keyword">GROUP BY</span> dipartimento;</code></pre>
+            </div>
+            <p>Risultato: media <strong>per ogni dipartimento</strong></p>
+        </div>
+    </div>
+
+    <h3>Sintassi</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL</div>
+        <pre><code><span class="keyword">SELECT</span> colonna_gruppo, <span class="function">funzione_aggregazione</span>(colonna)
+<span class="keyword">FROM</span> tabella
+<span class="keyword">GROUP BY</span> colonna_gruppo;</code></pre>
+    </div>
+
+    <h3>Esempi Pratici</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Stipendio medio per dipartimento</div>
+        <pre><code><span class="keyword">SELECT</span> 
+    dipartimento, 
+    <span class="function">AVG</span>(stipendio) <span class="keyword">AS</span> stipendio_medio
+<span class="keyword">FROM</span> dipendenti
+<span class="keyword">GROUP BY</span> dipartimento;</code></pre>
+    </div>
+
+    <p><strong>Risultato:</strong></p>
+    <table class="data-table">
+        <tr>
+            <th>dipartimento</th>
+            <th>stipendio_medio</th>
+        </tr>
+        <tr><td>IT</td><td>48500.00</td></tr>
+        <tr><td>Marketing</td><td>42000.00</td></tr>
+        <tr><td>Vendite</td><td>38000.00</td></tr>
+        <tr><td>HR</td><td>35000.00</td></tr>
+    </table>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Altri esempi di GROUP BY</div>
+        <pre><code><span class="comment">-- Numero di prodotti per categoria</span>
+<span class="keyword">SELECT</span> categoria, <span class="function">COUNT</span>(*) <span class="keyword">AS</span> num_prodotti
+<span class="keyword">FROM</span> prodotti
+<span class="keyword">GROUP BY</span> categoria;
+
+<span class="comment">-- Fatturato totale per cliente</span>
+<span class="keyword">SELECT</span> id_cliente, <span class="function">SUM</span>(totale) <span class="keyword">AS</span> totale_speso
+<span class="keyword">FROM</span> ordini
+<span class="keyword">GROUP BY</span> id_cliente;
+
+<span class="comment">-- Numero vendite e fatturato per venditore</span>
+<span class="keyword">SELECT</span> 
+    venditore, 
+    <span class="function">COUNT</span>(*) <span class="keyword">AS</span> num_vendite,
+    <span class="function">SUM</span>(importo) <span class="keyword">AS</span> fatturato
+<span class="keyword">FROM</span> vendite
+<span class="keyword">GROUP BY</span> venditore;</code></pre>
+    </div>
+
+    <div class="info-box danger">
+        <div class="info-box-title">Regola fondamentale del GROUP BY</div>
+        <p>Ogni colonna nel SELECT deve essere:</p>
+        <ol>
+            <li>Una <strong>funzione di aggregazione</strong> (COUNT, SUM, AVG, MAX, MIN), OPPURE</li>
+            <li><strong>Inclusa nel GROUP BY</strong></li>
+        </ol>
+        <p>Non puoi selezionare una colonna "normale" insieme a funzioni aggregate senza raggrupparla!</p>
+    </div>
+
+    <div class="comparison-box">
+        <div class="comparison-item bad">
+            <h4>ERRORE</h4>
+            <div class="code-block">
+                <div class="code-header">SQL</div>
+                <pre><code><span class="comment">-- nome non e aggregato ne nel GROUP BY!</span>
+<span class="keyword">SELECT</span> dipartimento, nome, <span class="function">AVG</span>(stipendio)
+<span class="keyword">FROM</span> dipendenti
+<span class="keyword">GROUP BY</span> dipartimento;</code></pre>
+            </div>
+            <p>Quale "nome" dovrebbe mostrare per ogni dipartimento?</p>
+        </div>
+        <div class="comparison-item good">
+            <h4>CORRETTO</h4>
+            <div class="code-block">
+                <div class="code-header">SQL</div>
+                <pre><code><span class="keyword">SELECT</span> dipartimento, <span class="function">AVG</span>(stipendio)
+<span class="keyword">FROM</span> dipendenti
+<span class="keyword">GROUP BY</span> dipartimento;</code></pre>
+            </div>
+            <p>Solo colonne aggregate o nel GROUP BY</p>
+        </div>
+    </div>
+
+    <h3>GROUP BY con piu colonne</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Raggruppamento multiplo</div>
+        <pre><code><span class="comment">-- Vendite per anno e mese</span>
+<span class="keyword">SELECT</span> 
+    <span class="function">YEAR</span>(data_vendita) <span class="keyword">AS</span> anno,
+    <span class="function">MONTH</span>(data_vendita) <span class="keyword">AS</span> mese,
+    <span class="function">COUNT</span>(*) <span class="keyword">AS</span> num_vendite,
+    <span class="function">SUM</span>(importo) <span class="keyword">AS</span> fatturato
+<span class="keyword">FROM</span> vendite
+<span class="keyword">GROUP BY</span> <span class="function">YEAR</span>(data_vendita), <span class="function">MONTH</span>(data_vendita);
+
+<span class="comment">-- Vendite per regione e categoria prodotto</span>
+<span class="keyword">SELECT</span> 
+    regione,
+    categoria,
+    <span class="function">SUM</span>(quantita) <span class="keyword">AS</span> quantita_totale
+<span class="keyword">FROM</span> vendite
+<span class="keyword">GROUP BY</span> regione, categoria;</code></pre>
+    </div>
+
+    <!-- SEZIONE 3.4 -->
+    <h2>3.4 HAVING - Filtrare i gruppi</h2>
+
+    <div class="definition-box">
+        <h4>Il problema</h4>
+        <p><code>WHERE</code> filtra le righe<strong>PRIMA</strong> dell'aggregazione. Ma come fare per filtrare i <strong>risultati</strong> dell'aggregazione? Ad esempio, "mostra solo i dipartimenti con stipendio medio superiore a 40000"?</p>
+    </div>
+
+    <div class="comparison-box">
+        <div class="comparison-item bad">
+            <h4>ERRORE: WHERE con aggregazione</h4>
+            <div class="code-block">
+                <div class="code-header">SQL</div>
+                <pre><code><span class="keyword">SELECT</span> dipartimento, <span class="function">AVG</span>(stipendio)
+<span class="keyword">FROM</span> dipendenti
+<span class="keyword">GROUP BY</span> dipartimento
+<span class="keyword">WHERE</span> <span class="function">AVG</span>(stipendio) > <span class="number">40000</span>;</code></pre>
+            </div>
+            <p>ERRORE! WHERE non puo usare funzioni aggregate</p>
+        </div>
+        <div class="comparison-item good">
+            <h4>CORRETTO: HAVING</h4>
+            <div class="code-block">
+                <div class="code-header">SQL</div>
+                <pre><code><span class="keyword">SELECT</span> dipartimento, <span class="function">AVG</span>(stipendio)
+<span class="keyword">FROM</span> dipendenti
+<span class="keyword">GROUP BY</span> dipartimento
+<span class="keyword">HAVING</span> <span class="function">AVG</span>(stipendio) > <span class="number">40000</span>;</code></pre>
+            </div>
+            <p>HAVING filtra dopo l'aggregazione</p>
+        </div>
+    </div>
+
+    <h3>WHERE vs HAVING</h3>
+
+    <table>
+        <tr>
+            <th>Caratteristica</th>
+            <th>WHERE</th>
+            <th>HAVING</th>
+        </tr>
+        <tr>
+            <td><strong>Quando filtra</strong></td>
+            <td>PRIMA del GROUP BY</td>
+            <td>DOPO il GROUP BY</td>
+        </tr>
+        <tr>
+            <td><strong>Cosa filtra</strong></td>
+            <td>Righe singole</td>
+            <td>Gruppi aggregati</td>
+        </tr>
+        <tr>
+            <td><strong>Puo usare funzioni aggregate?</strong></td>
+            <td>NO</td>
+            <td>SI</td>
+        </tr>
+        <tr>
+            <td><strong>Esempio</strong></td>
+            <td><code>WHERE stipendio > 30000</code></td>
+            <td><code>HAVING AVG(stipendio) > 40000</code></td>
+        </tr>
+    </table>
+
+    <h3>Esempi pratici</h3>
+
+    <div class="code-block">
+        <div class="code-header">SQL - HAVING</div>
+        <pre><code><span class="comment">-- Dipartimenti con piu di 5 dipendenti</span>
+<span class="keyword">SELECT</span> dipartimento, <span class="function">COUNT</span>(*) <span class="keyword">AS</span> num_dipendenti
+<span class="keyword">FROM</span> dipendenti
+<span class="keyword">GROUP BY</span> dipartimento
+<span class="keyword">HAVING</span> <span class="function">COUNT</span>(*) > <span class="number">5</span>;
+
+<span class="comment">-- Clienti che hanno speso piu di 1000 euro</span>
+<span class="keyword">SELECT</span> id_cliente, <span class="function">SUM</span>(totale) <span class="keyword">AS</span> totale_speso
+<span class="keyword">FROM</span> ordini
+<span class="keyword">GROUP BY</span> id_cliente
+<span class="keyword">HAVING</span> <span class="function">SUM</span>(totale) > <span class="number">1000</span>;
+
+<span class="comment">-- Categorie con almeno 10 prodotti e prezzo medio > 50</span>
+<span class="keyword">SELECT</span> 
+    categoria, 
+    <span class="function">COUNT</span>(*) <span class="keyword">AS</span> num_prodotti,
+    <span class="function">AVG</span>(prezzo) <span class="keyword">AS</span> prezzo_medio
+<span class="keyword">FROM</span> prodotti
+<span class="keyword">GROUP BY</span> categoria
+<span class="keyword">HAVING</span> <span class="function">COUNT</span>(*) >= <span class="number">10</span> <span class="keyword">AND</span> <span class="function">AVG</span>(prezzo) > <span class="number">50</span>;</code></pre>
+    </div>
+
+    <h3>Combinazione WHERE + HAVING</h3>
+
+    <p>Puoi usare WHERE e HAVING insieme: WHERE filtra le righe prima, HAVING filtra i gruppi dopo.</p>
+
+    <div class="code-block">
+        <div class="code-header">SQL - WHERE + GROUP BY + HAVING</div>
+        <pre><code><span class="comment">-- Media stipendi > 40000, considerando solo dipendenti assunti dopo il 2020</span>
+<span class="keyword">SELECT</span> dipartimento, <span class="function">AVG</span>(stipendio) <span class="keyword">AS</span> media
+<span class="keyword">FROM</span> dipendenti
+<span class="keyword">WHERE</span> data_assunzione > <span class="string">'2020-01-01'</span>  <span class="comment">-- Filtra RIGHE prima</span>
+<span class="keyword">GROUP BY</span> dipartimento
+<span class="keyword">HAVING</span> <span class="function">AVG</span>(stipendio) > <span class="number">40000</span>;       <span class="comment">-- Filtra GRUPPI dopo</span></code></pre>
+    </div>
+
+    <div class="order-box">
+        <h4>Ordine completo delle clausole SQL</h4>
+        <pre>
+SELECT   colonne, funzioni_aggregate
+FROM     tabella
+WHERE    condizione_righe
+GROUP BY colonna_gruppo
+HAVING   condizione_aggregata
+ORDER BY colonna
+LIMIT    n;
+        </pre>
+        <p style="margin-top: 15px; color: #4a5568;">Ricorda: questo ordine e obbligatorio!</p>
+    </div>
+
+    <!-- ESERCIZI -->
+    <div class="exercise-section">
+        <h2>Esercizi blocco 3</h2>
+        
+        <p>Usa la tabella <code>vendite</code>:</p>
+
+        <table class="data-table">
+            <tr>
+                <th>id</th>
+                <th>venditore</th>
+                <th>regione</th>
+                <th>prodotto</th>
+                <th>quantita</th>
+                <th>prezzo</th>
+                <th>data_vendita</th>
+            </tr>
+            <tr><td>1</td><td>Mario</td><td>Nord</td><td>Laptop</td><td>3</td><td>900</td><td>2024-01-10</td></tr>
+            <tr><td>2</td><td>Anna</td><td>Sud</td><td>Mouse</td><td>20</td><td>25</td><td>2024-01-12</td></tr>
+            <tr><td>3</td><td>Mario</td><td>Nord</td><td>Monitor</td><td>5</td><td>300</td><td>2024-01-15</td></tr>
+            <tr><td>4</td><td>Luca</td><td>Centro</td><td>Laptop</td><td>2</td><td>900</td><td>2024-02-01</td></tr>
+            <tr><td>5</td><td>Anna</td><td>Sud</td><td>Tastiera</td><td>15</td><td>50</td><td>2024-02-05</td></tr>
+            <tr><td>6</td><td>Mario</td><td>Nord</td><td>Mouse</td><td>30</td><td>25</td><td>2024-02-10</td></tr>
+            <tr><td>7</td><td>Luca</td><td>Centro</td><td>Monitor</td><td>4</td><td>300</td><td>2024-02-15</td></tr>
+        </table>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 3.1</div>
+            <p class="exercise-text">Conta il <strong>numero totale di vendite</strong> nella tabella.</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> <span class="function">COUNT</span>(*) <span class="keyword">AS</span> totale_vendite <span class="keyword">FROM</span> vendite;</code></pre>
+                    </div>
+                    <p>Risultato: 7</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 3.2</div>
+            <p class="exercise-text">Calcola il <strong>fatturato totale</strong> (quantita * prezzo).</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> <span class="function">SUM</span>(quantita * prezzo) <span class="keyword">AS</span> fatturato_totale <span class="keyword">FROM</span> vendite;</code></pre>
+                    </div>
+                    <p>Risultato: 8450</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 3.3</div>
+            <p class="exercise-text">Calcola il <strong>numero di vendite e il fatturato totale per ogni venditore</strong>.</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> 
+    venditore, 
+    <span class="function">COUNT</span>(*) <span class="keyword">AS</span> num_vendite,
+    <span class="function">SUM</span>(quantita * prezzo) <span class="keyword">AS</span> fatturato
+<span class="keyword">FROM</span> vendite
+<span class="keyword">GROUP BY</span> venditore;</code></pre>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 3.4</div>
+            <p class="exercise-text">Trova la <strong>quantita media venduta per regione</strong>.</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> regione, <span class="function">AVG</span>(quantita) <span class="keyword">AS</span> quantita_media
+<span class="keyword">FROM</span> vendite
+<span class="keyword">GROUP BY</span> regione;</code></pre>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 3.5</div>
+            <p class="exercise-text">Mostra solo i venditori con <strong>fatturato totale superiore a 2000</strong>.</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> venditore, <span class="function">SUM</span>(quantita * prezzo) <span class="keyword">AS</span> fatturato
+<span class="keyword">FROM</span> vendite
+<span class="keyword">GROUP BY</span> venditore
+<span class="keyword">HAVING</span> <span class="function">SUM</span>(quantita * prezzo) > <span class="number">2000</span>;</code></pre>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <div class="exercise">
+            <div class="exercise-number">Esercizio 3.6</div>
+            <p class="exercise-text">Per ogni prodotto, mostra <strong>quantita totale venduta e prezzo medio</strong>, ma solo per prodotti con <strong>quantita totale > 10</strong>, ordinati per quantita decrescente.</p>
+            <details>
+                <summary>Mostra Soluzione</summary>
+                <div class="solution">
+                    <div class="code-block">
+                        <div class="code-header">Soluzione</div>
+                        <pre><code><span class="keyword">SELECT</span> 
+    prodotto, 
+    <span class="function">SUM</span>(quantita) <span class="keyword">AS</span> quantita_totale,
+    <span class="function">AVG</span>(prezzo) <span class="keyword">AS</span> prezzo_medio
+<span class="keyword">FROM</span> vendite
+<span class="keyword">GROUP BY</span> prodotto
+<span class="keyword">HAVING</span> <span class="function">SUM</span>(quantita) > <span class="number">10</span>
+<span class="keyword">ORDER BY</span> quantita_totale <span class="keyword">DESC</span>;</code></pre>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- RIEPILOGO -->
+    <h2>Riepilogo blocco 3</h2>
+
+    <table>
+        <tr>
+            <th>Concetto</th>
+            <th>Sintassi</th>
+            <th>Esempio</th>
+        </tr>
+        <tr><td>Contare righe</td><td><code>COUNT(*)</code></td><td><code>SELECT COUNT(*) FROM ordini</code></td></tr>
+        <tr><td>Sommare valori</td><td><code>SUM(colonna)</code></td><td><code>SELECT SUM(totale) FROM ordini</code></td></tr>
+        <tr><td>Media</td><td><code>AVG(colonna)</code></td><td><code>SELECT AVG(stipendio) FROM dip</code></td></tr>
+        <tr><td>Massimo</td><td><code>MAX(colonna)</code></td><td><code>SELECT MAX(prezzo) FROM prodotti</code></td></tr>
+        <tr><td>Minimo</td><td><code>MIN(colonna)</code></td><td><code>SELECT MIN(prezzo) FROM prodotti</code></td></tr>
+        <tr><td>Raggruppare</td><td><code>GROUP BY col</code></td><td><code>GROUP BY dipartimento</code></td></tr>
+        <tr><td>Filtrare gruppi</td><td><code>HAVING condizione</code></td><td><code>HAVING COUNT(*) > 5</code></td></tr>
+    </table>
+
+    <div class="next-block">
+        <p style="margin-bottom: 20px; color: #718096;">Prossimo argomento:</p>
+        <a href="blocco4_join.html">Blocco 4: JOIN Essenziali</a>
+    </div>
+
+</div>
+
+</body>
+</html>
