@@ -13,55 +13,106 @@
         }
 
         body {
-            font-family: 'Calibri', 'Arial', sans-serif;
-            background: #f5f5f5;
+            font-family: 'Segoe UI', 'Calibri', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 30px;
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
         .container {
             max-width: 1100px;
             margin: 0 auto;
             background: white;
-            padding: 60px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 50px 60px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .page-title {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
         }
 
         h1 {
-            color: #1f4788;
-            font-size: 44px;
-            border-bottom: 4px solid #1f4788;
-            padding-bottom: 12.5px;
-            margin-bottom: 29px;
+            color: #2d3748;
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #2d2e30;
+            font-size: 18px;
+        }
+
+        .subtitle strong {
+            color: #667eea;
         }
 
         h2 {
-            color: #1f4788;
-            font-size: 34px;
-            border-bottom: 3px solid #1f4788;
-            padding-bottom: 10px;
-            margin-top: 60px;
+            color: #2d3748;
+            font-size: 28px;
+            margin-top: 50px;
             margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4a5468;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
         }
 
         h3 {
-            color: #2c5aa0;
-            font-size: 24px;
+            color: #4a5568;
+            font-size: 22px;
             margin-top: 35px;
             margin-bottom: 15px;
         }
 
         p {
-            font-size: 18px;
+            color: #4a5568;
+            font-size: 17px;
             margin-bottom: 15px;
+            text-align: justify;
         }
 
         .info-box {
-            background: #e8f4f8;
-            padding: 25px;
-            border-left: 5px solid #1f4788;
-            margin: 30px 0;
-            border-radius: 5px;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-left: 5px solid #667eea;
+            padding: 25px 30px;
+            margin: 25px 0;
+            border-radius: 0 15px 15px 0;
+        }
+
+        .info-box p {
+            margin-bottom: 8px;
+        }
+
+        .info-box p:last-child {
+            margin-bottom: 0;
         }
 
         table {
@@ -69,43 +120,56 @@
             border-collapse: collapse;
             margin: 25px 0;
             font-size: 16px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         th {
-            background: #1f4788;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px;
+            padding: 15px 20px;
             text-align: left;
+            font-weight: 600;
         }
 
         td {
-            padding: 15px;
-            border: 1px solid #ddd;
+            padding: 14px 20px;
+            border-bottom: 1px solid #4a5468;
+            color: #4a5568;
             vertical-align: top;
         }
 
         tr:nth-child(even) {
-            background: #f9f9f9;
+            background: #f7fafc;
+        }
+
+        tr:hover {
+            background: #edf2f7;
         }
 
         .block-title {
             font-weight: bold;
-            color: #1f4788;
+            color: #667eea;
+            font-size: 18px;
         }
 
         .open-link {
             display: inline-block;
-            margin-top: 10px;
-            background: #1f4788;
+            margin-top: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #ffffff;
             text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 10px 18px;
+            border-radius: 8px;
             font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         .open-link:hover {
-            background: #2c5aa0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
         }
 
         ul {
@@ -114,7 +178,8 @@
 
         li {
             margin-bottom: 8px;
-            font-size: 17px;
+            font-size: 16px;
+            color: #4a5568;
         }
 
         .controls {
@@ -126,17 +191,20 @@
         }
 
         .btn {
-            background: #1f4788;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 14px 28px;
-            font-size: 16px;
-            border-radius: 5px;
+            padding: 12px 24px;
+            font-size: 15px;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         .btn:hover {
-            background: #2c5aa0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
         }
 
         @media print {
@@ -147,6 +215,7 @@
             .container {
                 box-shadow: none;
                 padding: 0;
+                border-radius: 0;
             }
             .controls {
                 display: none;
@@ -159,7 +228,10 @@
 
 <div class="container">
 
-    <h1>SQL e database relazionali</h1>
+    <div class="header">
+        <div class="page-title">Corso SQL</div>
+        <h1>SQL e database relazionali</h1>
+    </div>
 
     <div class="info-box">
         <p><strong>Durata:</strong> 4 ore totali (teoria + esercizi)</p>
