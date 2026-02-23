@@ -8,7 +8,8 @@ select
 "SUPERFICIE_VL",
 "POPOLAZIONE_NUM" / "SUPERFICIE_VL" as "DENSITA"
 from comune
-where "POPOLAZIONE_NUM" >= 30000
+where "POPOLAZIONE_NUM" >= 30000 AND
+LOWER("REGIONE_DES") LIKE '%lombardia%'
 order by "POPOLAZIONE_NUM" desc
 limit 10
 
