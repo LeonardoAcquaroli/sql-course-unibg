@@ -248,7 +248,7 @@
             font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
             font-size: 15px;
             line-height: 1.6;
-            color: #4a5468;
+            color: #e6eef6;
         }
 
         .keyword {
@@ -545,6 +545,27 @@
             grid-template-columns: 1fr 1fr;
             gap: 30px;
             margin: 25px 0;
+        }
+
+        /* Make table containers shrink correctly inside the grid
+           and allow horizontal scrolling when a table is wider than its column. */
+        .tables-side-by-side .table-container {
+            min-width: 0;
+            overflow-x: auto;
+        }
+
+        /* Ensure data tables fit their container and wrap long content */
+        .data-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            word-break: break-word;
+            white-space: normal;
+            overflow-wrap: anywhere;
         }
 
         .table-container h4 {
