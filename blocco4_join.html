@@ -248,7 +248,17 @@
             font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
             font-size: 15px;
             line-height: 1.6;
+            color: #2d3748; /* inline/table code should remain dark */
+            background: transparent;
+            padding: 0;
+        }
+
+        /* Ensure code inside code blocks is light-colored on the dark background */
+        pre code {
             color: #e6eef6;
+            background: transparent;
+            display: inline;
+            padding: 0;
         }
 
         .keyword {
