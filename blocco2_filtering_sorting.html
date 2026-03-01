@@ -208,7 +208,123 @@
   <span class="keyword">AND</span> data_ordine <span class="operator"><=</span> <span class="string">'2023-12-31'</span>;</code></pre>
     </div>
 
-    <h2>2.3 AND / OR - Combinare condizioni</h2>
+    <h2>2.3 BETWEEN - Intervalli di valori</h2>
+
+    <div class="definition-box">
+        <h4>Definizione</h4>
+        <p>L'operatore <code>BETWEEN</code> verifica se un valore rientra in un <strong>intervallo inclusivo</strong> (entrambi gli estremi sono inclusi). È una sintassi più compatta e leggibile rispetto a scrivere due condizioni separate con <code>&gt;=</code> e <code>&lt;=</code>.</p>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - BETWEEN su numeri</div>
+        <pre><code><span class="comment">-- Prodotti con prezzo tra 50 e 200 (estremi inclusi)</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> prodotti
+<span class="keyword">WHERE</span> prezzo <span class="keyword">BETWEEN</span> <span class="number">50</span> <span class="keyword">AND</span> <span class="number">200</span>;
+
+<span class="comment">-- Equivalente a:</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> prodotti
+<span class="keyword">WHERE</span> prezzo <span class="operator">&gt;=</span> <span class="number">50</span> <span class="keyword">AND</span> prezzo <span class="operator">&lt;=</span> <span class="number">200</span>;</code></pre>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - BETWEEN su date</div>
+        <pre><code><span class="comment">-- Ordini compresi nel mese di gennaio 2024</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> ordini
+<span class="keyword">WHERE</span> data_ordine <span class="keyword">BETWEEN</span> <span class="string">'2024-01-01'</span> <span class="keyword">AND</span> <span class="string">'2024-01-31'</span>;</code></pre>
+    </div>
+
+    <div class="info-box">
+        <div class="info-box-title">Gli estremi sono inclusi</div>
+        <p><code>BETWEEN 50 AND 200</code> restituisce anche le righe con valore esattamente uguale a 50 o 200. Per escludere gli estremi usa <code>&gt;</code> e <code>&lt;</code> nella forma estesa.</p>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - NOT BETWEEN per escludere un intervallo</div>
+        <pre><code><span class="comment">-- Prodotti con prezzo al di fuori dell'intervallo 50-200</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> prodotti
+<span class="keyword">WHERE</span> prezzo <span class="keyword">NOT BETWEEN</span> <span class="number">50</span> <span class="keyword">AND</span> <span class="number">200</span>;</code></pre>
+    </div>
+
+    <h2>2.4 LIKE - Ricerca per pattern</h2>
+
+    <div class="definition-box">
+        <h4>Definizione</h4>
+        <p>L'operatore <code>LIKE</code> permette di cercare stringhe che corrispondono a un <strong>pattern (modello)</strong>, usando caratteri speciali detti <em>wildcard</em>. È ideale per ricerche parziali su testi quando non conosci il valore esatto.</p>
+    </div>
+
+    <h3>Wildcard disponibili</h3>
+
+    <table>
+        <tr>
+            <th>Wildcard</th>
+            <th>Significato</th>
+            <th>Esempio pattern</th>
+            <th>Corrisponde a...</th>
+        </tr>
+        <tr>
+            <td><code>%</code></td>
+            <td>Qualsiasi sequenza di caratteri (anche vuota)</td>
+            <td><code>'%mario%'</code></td>
+            <td>"mario", "super mario", "mario bros"</td>
+        </tr>
+        <tr>
+            <td><code>_</code></td>
+            <td>Esattamente un carattere qualsiasi</td>
+            <td><code>'_at'</code></td>
+            <td>"cat", "bat", "hat" — ma NON "chat" (2 caratteri prima di "at")</td>
+        </tr>
+    </table>
+
+    <div class="code-block">
+        <div class="code-header">SQL - LIKE con wildcard %</div>
+        <pre><code><span class="comment">-- Prodotti il cui nome inizia con "Lap"</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> prodotti
+<span class="keyword">WHERE</span> nome_prodotto <span class="keyword">LIKE</span> <span class="string">'Lap%'</span>;
+
+<span class="comment">-- Prodotti che contengono "book" ovunque nel nome</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> prodotti
+<span class="keyword">WHERE</span> nome_prodotto <span class="keyword">LIKE</span> <span class="string">'%book%'</span>;
+
+<span class="comment">-- Prodotti il cui nome finisce con "o"</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> prodotti
+<span class="keyword">WHERE</span> nome_prodotto <span class="keyword">LIKE</span> <span class="string">'%o'</span>;
+
+<span class="comment">-- Codici di esattamente 3 caratteri che iniziano con "A"</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> prodotti
+<span class="keyword">WHERE</span> codice <span class="keyword">LIKE</span> <span class="string">'A__'</span>;</code></pre>
+    </div>
+
+    <h3>Ricerca case-insensitive con LOWER()</h3>
+
+    <div class="info-box warning">
+        <div class="info-box-title">Attenzione: LIKE è case-sensitive</div>
+        <p>In molti database, <code>LIKE 'Laptop%'</code> non trova "laptop" o "LAPTOP". Per fare ricerche <strong>indipendenti dalle maiuscole</strong>, converti il campo in minuscolo con <code>LOWER()</code> e scrivi il pattern tutto in minuscolo.</p>
+    </div>
+
+    <div class="definition-box">
+        <h4>LOWER(campo)</h4>
+        <p>La funzione <code>LOWER(campo)</code> converte tutti i caratteri del valore testuale in <strong>minuscolo</strong>. Applicata alla colonna dentro la clausola WHERE, permette confronti case-insensitive senza modificare i dati originali nella tabella.</p>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - Ricerca case-insensitive con LOWER()</div>
+        <pre><code><span class="comment">-- Trova "Laptop", "LAPTOP", "LaPtOp", ecc.</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> prodotti
+<span class="keyword">WHERE</span> LOWER(nome_prodotto) <span class="keyword">LIKE</span> <span class="string">'%laptop%'</span>;
+
+<span class="comment">-- Clienti il cui cognome contiene "rossi" in qualsiasi forma</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> clienti
+<span class="keyword">WHERE</span> LOWER(cognome) <span class="keyword">LIKE</span> <span class="string">'%rossi%'</span>;</code></pre>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">SQL - NOT LIKE per escludere pattern</div>
+        <pre><code><span class="comment">-- Prodotti il cui nome NON inizia con "USB"</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> prodotti
+<span class="keyword">WHERE</span> nome_prodotto <span class="keyword">NOT LIKE</span> <span class="string">'USB%'</span>;</code></pre>
+    </div>
+
+    <h2>2.5 AND / OR - Combinare condizioni</h2>
 
     <p>Spesso una singola condizione non basta. Gli operatori logici <code>AND</code> e <code>OR</code> permettono di combinare piu condizioni nella stessa clausola WHERE.</p>
 
@@ -252,7 +368,7 @@
    <span class="keyword">OR</span> dipartimento <span class="operator">=</span> <span class="string">'Marketing'</span>;</code></pre>
     </div>
 
-    <h2>2.4 IN - Verificare appartenenza a un elenco</h2>
+    <h2>2.6 IN - Verificare appartenenza a un elenco</h2>
 
     <div class="definition-box">
         <h4>Definizione</h4>
@@ -280,7 +396,7 @@
 <span class="keyword">WHERE</span> dipartimento <span class="keyword">NOT IN</span> (<span class="string">'HR'</span>, <span class="string">'Amministrazione'</span>);</code></pre>
     </div>
 
-    <h2>2.5 IS NULL - Gestire i valori mancanti</h2>
+    <h2>2.7 IS NULL - Gestire i valori mancanti</h2>
 
     <div class="definition-box">
         <h4>Cos'e NULL?</h4>
@@ -322,7 +438,7 @@
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dipendenti <span class="keyword">WHERE</span> bonus <span class="keyword">IS NOT NULL</span>;</code></pre>
     </div>
 
-    <h2>2.6 ORDER BY - Ordinare i risultati</h2>
+    <h2>2.8 ORDER BY - Ordinare i risultati</h2>
 
     <div class="definition-box">
         <h4>Definizione</h4>
@@ -503,6 +619,8 @@ LIMIT    n;
     <table>
         <tr><th>Concetto</th><th>Sintassi</th><th>Esempio</th></tr>
         <tr><td>Filtrare righe</td><td><code>WHERE condizione</code></td><td><code>WHERE prezzo > 100</code></td></tr>
+        <tr><td>Intervallo di valori</td><td><code>BETWEEN a AND b</code></td><td><code>WHERE prezzo BETWEEN 50 AND 200</code></td></tr>
+        <tr><td>Ricerca per pattern</td><td><code>LIKE 'pattern'</code></td><td><code>WHERE LOWER(nome) LIKE '%rossi%'</code></td></tr>
         <tr><td>Condizioni multiple (tutte)</td><td><code>AND</code></td><td><code>WHERE a = 1 AND b = 2</code></td></tr>
         <tr><td>Condizioni multiple (almeno una)</td><td><code>OR</code></td><td><code>WHERE a = 1 OR b = 2</code></td></tr>
         <tr><td>Appartenenza a lista</td><td><code>IN (valori)</code></td><td><code>WHERE stato IN ('a', 'b')</code></td></tr>
